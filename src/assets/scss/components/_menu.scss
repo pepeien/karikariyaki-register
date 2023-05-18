@@ -1,7 +1,7 @@
 .menu {
 	&__tree, &__stem {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		overflow: hidden;
 	}
 
@@ -16,23 +16,30 @@
 	&__node {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		flex: 1;
+		justify-content: flex-end;
 
 		button {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			min-height: 3vh;
-			padding: 2vh;
+			justify-content: center;
+			height: 7vh;
+			padding: 0 8vh;
+			background-color: #C79D39;
 			border-radius: 10px;
-			margin-bottom: 1vh;
-			gap: 0 2.5vh;
-			background-color: transparent;
-			transition: background-color ease-in-out 300ms;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+	
+			filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+	
+			-webkit-transition: height linear .1s;
+			-moz-transition: 	height linear .1s;
+			-ms-transition: 	height linear .1s;
+			-o-transition: 		height linear .1s;
+			transition: 		height linear .1s;
 
 			&:disabled {
-				background-color: transparent;
+				background-color: gray;
 				pointer-events: none;
 
 				&:hover {
@@ -40,36 +47,25 @@
 				}
 
 				span {
-					color: $foreground-bright;
-				}
-
-				svg circle {
-					fill: $foreground-bright;
-				}
-
-				img {
-					opacity: 0.3;
+					color: rgb(206, 193, 193);
 				}
 			}
 
 			&:not([disabled]) {
 				&:hover {
 					cursor: pointer;
-	
-					.node__arrow path {
-						stroke: $accent-bright;
-					}
 				}
-	
+
 				&:hover, &[data-is-active="true"] {
-					background-color: $foreground-bright;
+					height: 9vh;
 				}
 			}
 
 			span {
-				font-family: 'Nunito';
-				font-size: 1rem;
-				color: $foreground-brighter;
+				font-family: 'DarumadropOne';
+				font-size: 2rem;
+				font-weight: bold;
+				color: white;
 				width: 100%;
 				word-wrap: break-word;
 				text-align: start;

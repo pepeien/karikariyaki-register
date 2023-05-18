@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FileType, FileTypes } from 'karikarihelper';
 
 // Animations
 import { BasicAnimations } from '@animations';
-
-// Enums
-import { FileType, FileTypes } from '@enums';
 
 // Services
 import { LanguageService } from '@services';

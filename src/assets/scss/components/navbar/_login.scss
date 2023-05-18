@@ -8,7 +8,8 @@ app-navbar {
 			justify-content: center;
 			align-items: center;
 			position: absolute;
-			width: 100%;
+			height: 100%;
+			margin-top: -12dvh;
 
 			app-avatar {
 				display: flex;
@@ -32,7 +33,7 @@ app-navbar {
 				z-index: 102;
 		
 				mat-form-field {
-					font-family: 'Nunito' !important;
+					font-family: 'DarumadropOne' !important;
 					font-weight: 600 !important;
 					color: $foreground-brighter !important;
 					width: 100% !important;
@@ -45,6 +46,10 @@ app-navbar {
 						}
 					}
 	
+					input {
+						height: 6vh !important;
+					}
+
 					input, mat-label {
 						color: $accent-dark !important;
 					}
@@ -86,7 +91,7 @@ app-navbar {
 					border-radius: $app-input-border-raidus;
 					border-color: $foreground-bright;
 					outline: transparent;
-					font-family: 'Nunito';
+					font-family: 'DarumadropOne';
 					font-size: 1.2rem;
 					color: $foreground-brighter;
 
@@ -123,7 +128,7 @@ app-navbar {
 			}
 
 			&__error {
-				font-family: 'Nunito';
+				font-family: 'DarumadropOne';
 				font-weight: 800;
 				font-size: 0.8rem;
 				color: #ff9966;
@@ -155,6 +160,8 @@ app-navbar {
 	app-navbar {
 		.navbar {	
 			&__login {
+				margin: 0;
+
 				form {
 					width: 20vw;
 		
