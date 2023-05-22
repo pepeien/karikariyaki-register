@@ -48,6 +48,7 @@ export class EventRegistryApiV1 extends BaseApi {
 			endpoint.href,
 			{
 				name: params.name,
+				date: params.date,
 			},
 			{
 				withCredentials: true,

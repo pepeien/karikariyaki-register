@@ -7,9 +7,37 @@
 		justify-content: center;
 		position: absolute;
 		width: 100vw;
-		height: 100vh;
+		height: 100%;
 		background-color: $background;
-		z-index: $max-z-index;
+		z-index: $max-z-index - 2;
+		overflow: hidden;
+		align-self: flex-start;
+
+		.--back-event {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			bottom: 2vh;
+			left: 2vh;
+			background-color: $foreground;
+			color: $accent-bright;
+			font-family: 'DarumadropOne';
+			font-size: 2.5vh;
+			border-radius: 12px;
+			padding: 0 4vh;
+			height: 8vh;
+			margin: 0 auto;
+			filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+
+			&:hover {
+				cursor: pointer;
+			}
+
+			mat-icon {
+				transform: scale(1.5);
+			}
+		}
 
 		h1 {
 			font-family: 'DarumadropOne';
@@ -18,82 +46,112 @@
 			color: $foreground;
 		}
 
-		form {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			position: relative;
-			gap: 2vh 0;
-			width: 35vh;
-			margin-top: 2vh;
-
-			mat-form-field {
-				font-family: 'Nunito' !important;
-				font-weight: 600 !important;
-				color: $foreground-bright !important;
-				width: 100% !important;
-			
-				&[data-is-disabled="true"] {
+		&__form {
+			form {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				position: relative;
+				width: 35vh;
+				margin: 8vh 0 4vh 0;
+	
+				mat-form-field {
+					font-family: 'Nunito' !important;
+					font-weight: 600 !important;
 					color: $foreground-bright !important;
+					width: 100% !important;
+				
+					&[data-is-disabled="true"] {
+						color: $foreground-bright !important;
+					
+						.mat-mdc-text-field-wrapper {
+							background-color: $foreground-disabled !important;
+						}
+					}
+	
+					input {
+						height: 3vh !important;
+					}
+	
+					input, mat-label {
+						font-family: 'Nunito' !important;
+						color: $foreground-bright!important;
+					}
 				
 					.mat-mdc-text-field-wrapper {
-						background-color: $foreground-disabled !important;
+						background-color: transparent !important;
+						border-radius: $app-input-border-raidus !important;
+	
+						-webkit-box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1) !important; 
+						-moz-box-shadow:    0px 10px 15px -3px rgba(0,0,0,0.1) !important; 
+						-o-box-shadow:   	0px 10px 15px -3px rgba(0,0,0,0.1) !important;
+						box-shadow:         0px 10px 15px -3px rgba(0,0,0,0.1) !important;
+					}
+	
+					.mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
+						border-color: $foreground-bright !important;
+					}
+				
+					.mdc-notched-outline__leading {
+						border-top-left-radius: $app-input-border-raidus !important;
+						border-bottom-left-radius: $app-input-border-raidus !important;
+					}
+				
+					.mdc-notched-outline__trailing {
+						border-top-right-radius: $app-input-border-raidus !important;
+						border-bottom-right-radius: $app-input-border-raidus !important;
+					}
+				
+					.mdc-notched-outline--notched {
+						color: $accent-dark !important;
+					}
+				}
+			}
+	
+			> button {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 12px;
+				padding: 0 12vh;
+				height: 7vh;
+				margin: 0 auto;
+				background-color: transparent;
+				border: solid 2px transparent;
+				border-radius: $app-input-border-raidus;
+				border-color: $foreground-bright;
+				outline: transparent;
+				font-family: 'DarumadropOne';
+				font-size: 1.2rem;
+				color: $foreground-bright;
+
+				transition: color ease-in-out 300ms, border-color ease-in-out 300ms, background-color ease-in-out 300ms;
+		
+				&:disabled {
+					color: $foreground-bright;
+					border-color: $foreground-disabled;
+					background-color: $foreground-disabled;
+					pointer-events: none;
+
+					&:hover {
+						cursor: default;
 					}
 				}
 
-				input {
-					height: 3vh !important;
+				&:not([disabled]) {
+					&:hover {
+						cursor: pointer;
+					}
+		
+					&:hover, &:focus {
+						border-color: transparent;
+						background-color: $foreground-brighter;
+						color: $accent-bright;
+					}
 				}
-
-				input, mat-label {
-					font-family: 'Nunito' !important;
-					color: $foreground-bright!important;
-				}
-			
-				.mat-mdc-text-field-wrapper {
-					background-color: transparent !important;
-					border-radius: $app-input-border-raidus !important;
-
-					-webkit-box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1) !important; 
-					-moz-box-shadow:    0px 10px 15px -3px rgba(0,0,0,0.1) !important; 
-					-o-box-shadow:   	0px 10px 15px -3px rgba(0,0,0,0.1) !important;
-					box-shadow:         0px 10px 15px -3px rgba(0,0,0,0.1) !important;
-				}
-
-				.mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
-					border-color: $foreground-bright !important;
-				}
-			
-				.mdc-notched-outline__leading {
-					border-top-left-radius: $app-input-border-raidus !important;
-					border-bottom-left-radius: $app-input-border-raidus !important;
-				}
-			
-				.mdc-notched-outline__trailing {
-					border-top-right-radius: $app-input-border-raidus !important;
-					border-bottom-right-radius: $app-input-border-raidus !important;
-				}
-			
-				.mdc-notched-outline--notched {
-					color: $accent-dark !important;
-				}
+				
 			}
-		}
-
-		button {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			background-color: $foreground-brighter;
-			color: $accent-bright;
-			font-family: 'DarumadropOne';
-			font-size: 2.5vh;
-			border-radius: 12px;
-			padding: 0 12vh;
-			height: 7vh;
-			margin: 0 auto;
-			filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
 		}
 	}
 }

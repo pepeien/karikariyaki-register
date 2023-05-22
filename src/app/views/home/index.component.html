@@ -1,27 +1,55 @@
-<main class="event">
-	<div *ngIf="availableEvents.length === 0" class="event__registry" >
-		<h1>No event was found</h1>
-		<app-logo></app-logo>
-		<div class="evetn__registry__form">
+<main *ngIf="isHandshaking" class="placeholder">
+	<app-logo
+		[@breathe]="logoBreatheAnimationState"
+		(@breathe.done)="onLogoBreatheAnimationDone()"
+	>
+	</app-logo>
+</main>
+<main *ngIf="isHandshaking === false" class="event">
+	<app-logo></app-logo>
+	<div
+		class="event__registry"
+		[@horizontalShrink]="creationAnimationState"
+		(@horizontalShrink.done)="onCreationAnimation($event)"
+	>
+		<button class="--back-event" (click)="cancelEventCreation()">
+			<mat-icon>arrow_back</mat-icon>
+		</button>
+		<div class="event__registry__form">
+			<h1>New Event</h1>
 			<form [formGroup]="eventRegistryForm">
 				<mat-form-field appearance="outline">
 					<mat-label>Name</mat-label>
 					<input matInput formControlName="name" required>
 				</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Date</mat-label>
+					<input matInput formControlName="date" [matDatepicker]="picker">
+					<mat-hint>MM/DD/YYYY</mat-hint>
+					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker></mat-datepicker>
+				</mat-form-field>
 			</form>
-			<button>Create</button>
+			<button (click)="onEventCreation()" [disabled]="isEventCreationInvalid()">Create</button>
 		</div>
 	</div>
-	<div *ngIf="availableEvents.length > 0" class="event__selector">
+	<div class="event__selector">
+		<h1>Events</h1>
+		<button class="--new-event" (click)="initEventCreation()">
+			<mat-icon>add</mat-icon>
+			<span>New Event</span>
+		</button>
 		<mat-tab-group [selectedIndex]="1">
-			<mat-tab label="Past Events">
+			<mat-tab label="Finished">
 				<ul class="event__selector__list --past">
 					<li *ngFor="let event of pastEvents">
-						<button (click)="onEventClick(event)">{{ event.name }}</button>
+						<button (click)="onEventClick(event)">
+							<span>{{ event.name }}</span>
+						</button>
 					</li>
 				</ul>
 			</mat-tab>
-			<mat-tab label="Current Events">
+			<mat-tab label="Ongoing">
 				<ul class="event__selector__list">
 					<li *ngFor="let event of currentEvents">
 						<button (click)="onEventClick(event)">
@@ -31,10 +59,12 @@
 					</li>
 				</ul>
 			</mat-tab>
-			<mat-tab label="Future Events">
+			<mat-tab label="Upcoming">
 				<ul class="event__selector__list --future">
 					<li *ngFor="let event of futureEvents">
-						<button (click)="onEventClick(event)">{{ event.name }}</button>
+						<button (click)="onEventClick(event)">
+							<span>{{ event.name }}</span>
+						</button>
 					</li>
 				</ul>
 			</mat-tab>

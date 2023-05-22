@@ -11,10 +11,10 @@
 @import './views//index';
 
 .root__view > app-avatar {
-	position: absolute;
+	position: fixed;
 	height: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
 	width: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
-	top: 0;
-	right: 0;
-	margin: 2vh 2vh 0 0;
+	bottom: 2vh;
+	right: 2vh;
+	z-index: $max-z-index - 1;
 }
