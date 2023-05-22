@@ -33,8 +33,17 @@
 			-moz-box-shadow: 	4px 4px 4px 0px rgba(0,0,0,0.1);
 			box-shadow: 		4px 4px 4px 0px rgba(0,0,0,0.1);
 
+			-webkit-transition: background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			-moz-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			-ms-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			-o-transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+
 			&:hover {
 				cursor: pointer;
+
+				background-color: $foreground-brighter;
+				border-color: $foreground-brighter;
 			}
 
 			mat-icon {
@@ -44,7 +53,7 @@
 
 		h1 {
 			font-family: 'DarumadropOne';
-			font-size: clamp(3vh, 3vh + 1.2rem, 6vh);
+			font-size: clamp(6vh, 6vh + 1.2rem, 8vh);
 			text-align: center;
 			color: $foreground;
 		}

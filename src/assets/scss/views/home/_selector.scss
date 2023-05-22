@@ -30,17 +30,18 @@
 			font-size: 2vh;
 			padding: 2vh;
 
-			-webkit-transition: background-color ease-in-out .1s, border-color ease-in-out .1s;
-			-moz-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s;
-			-ms-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s;
-			-o-transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s;
-			transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s;
+			-webkit-transition: background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			-moz-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			-ms-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			-o-transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+			transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
 
 			&:hover {
 				cursor: pointer;
 
 				background-color: $foreground-brighter;
 				border-color: $foreground-brighter;
+				color: $accent-bright;
 			}
 
 			mat-icon {
@@ -110,6 +111,10 @@
 				li {
 					background-color: $foreground-disabled;
 					pointer-events: none;
+
+					button {
+						color: $foreground;
+					}
 				}
 			}
 
@@ -145,10 +150,12 @@
 				font-size: clamp(1vh, 1vh + 1rem, 4vh);
 				text-align: center;
 				color: $foreground;
+				background-color: $foreground;
 				overflow: hidden;
 				height: auto;
 				padding: 2vh;
 				margin-bottom: 1vh;
+				background-color: transparent;
 
 				-webkit-box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.1);
 				-moz-box-shadow: 	4px 4px 4px 0px rgba(0,0,0,0.1);
