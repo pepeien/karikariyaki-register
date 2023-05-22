@@ -1,4 +1,5 @@
-<app-navbar></app-navbar>
+<app-navbar [style]="isLoggedIn ? { pointerEvents: 'none' } : undefined"></app-navbar>
 <div class="root__view" *ngIf="isLoggedIn">
+	<app-avatar [base64Image]="operator?.photo"></app-avatar>
 	<router-outlet></router-outlet>
 </div>

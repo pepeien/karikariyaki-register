@@ -18,7 +18,7 @@ app-navbar {
 				position: relative;
 				width: clamp($avatar-min-size, 20vh + 1rem, $avatar-max-size);
 				height: clamp($avatar-min-size, 20vh + 1rem, $avatar-max-size);
-				z-index: 102;
+				z-index: $max-z-index;
 			}
 	
 			form {
@@ -30,7 +30,7 @@ app-navbar {
 				width: 80vw;
 				gap: 2vh 0;
 				margin-top: 4vh;
-				z-index: 102;
+				z-index: $max-z-index;
 		
 				mat-form-field {
 					font-family: 'DarumadropOne' !important;
@@ -146,7 +146,7 @@ app-navbar {
 				width: 24vh;
 				height: 12vh;
 				bottom: 6dvh;
-				z-index: 101;
+				z-index: calc($max-z-index - 1);
 
 				& path, & ellipse  {
 					fill: $foreground-bright;

@@ -1,0 +1,22 @@
+@import './selector';
+@import './registry';
+
+.event {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100vh;
+	width: 100dvw;
+
+	app-logo {
+		position: absolute;
+		height: clamp(10vh, 10vh + 1rem, 15vh);
+		width: clamp(15vh, 10vh + 1rem, 20vh);
+		bottom: 0;
+
+		& svg {
+			fill: $foreground-disabled;
+			opacity: 0.5;
+		}
+	}
+}

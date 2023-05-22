@@ -1,0 +1,99 @@
+.event {
+	&__registry {
+		display: flex;
+		flex-direction: column;
+		gap: 2vh 0;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		width: 100vw;
+		height: 100vh;
+		background-color: $background;
+		z-index: $max-z-index;
+
+		h1 {
+			font-family: 'DarumadropOne';
+			font-size: clamp(3vh, 3vh + 1.2rem, 6vh);
+			text-align: center;
+			color: $foreground;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+			gap: 2vh 0;
+			width: 35vh;
+			margin-top: 2vh;
+
+			mat-form-field {
+				font-family: 'Nunito' !important;
+				font-weight: 600 !important;
+				color: $foreground-bright !important;
+				width: 100% !important;
+			
+				&[data-is-disabled="true"] {
+					color: $foreground-bright !important;
+				
+					.mat-mdc-text-field-wrapper {
+						background-color: $foreground-disabled !important;
+					}
+				}
+
+				input {
+					height: 3vh !important;
+				}
+
+				input, mat-label {
+					font-family: 'Nunito' !important;
+					color: $foreground-bright!important;
+				}
+			
+				.mat-mdc-text-field-wrapper {
+					background-color: transparent !important;
+					border-radius: $app-input-border-raidus !important;
+
+					-webkit-box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1) !important; 
+					-moz-box-shadow:    0px 10px 15px -3px rgba(0,0,0,0.1) !important; 
+					-o-box-shadow:   	0px 10px 15px -3px rgba(0,0,0,0.1) !important;
+					box-shadow:         0px 10px 15px -3px rgba(0,0,0,0.1) !important;
+				}
+
+				.mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
+					border-color: $foreground-bright !important;
+				}
+			
+				.mdc-notched-outline__leading {
+					border-top-left-radius: $app-input-border-raidus !important;
+					border-bottom-left-radius: $app-input-border-raidus !important;
+				}
+			
+				.mdc-notched-outline__trailing {
+					border-top-right-radius: $app-input-border-raidus !important;
+					border-bottom-right-radius: $app-input-border-raidus !important;
+				}
+			
+				.mdc-notched-outline--notched {
+					color: $accent-dark !important;
+				}
+			}
+		}
+
+		button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: $foreground-brighter;
+			color: $accent-bright;
+			font-family: 'DarumadropOne';
+			font-size: 2.5vh;
+			border-radius: 12px;
+			padding: 0 12vh;
+			height: 7vh;
+			margin: 0 auto;
+			filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+		}
+	}
+}

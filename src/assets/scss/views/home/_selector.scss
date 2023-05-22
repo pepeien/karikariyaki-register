@@ -1,0 +1,122 @@
+.event {
+	&__selector {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 90%;
+		padding: 12vh 0 0 0;
+
+		&__list {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 2vh 0;
+			width: 90%;
+			margin: 0 auto;
+			padding: 5vh 0;
+
+			li {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: $foreground-bright;
+				border-radius: 12px;
+				padding: 2vh;
+				width: 100%;
+				filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+
+				-webkit-transition: background-color ease-in-out .1s;
+				-moz-transition: 	background-color ease-in-out .1s;
+				-ms-transition: 	background-color ease-in-out .1s;
+				-o-transition: 		background-color ease-in-out .1s;
+				transition: 		background-color ease-in-out .1s;
+
+				&:hover {
+					cursor: pointer;
+
+					background-color: $foreground-brighter;
+				}
+
+				button {
+					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					align-items: center;
+					width: 100%;
+					height: 100%;
+					background-color: transparent;
+					outline: transparent;
+					color: $accent-bright;
+					font-family: 'Nunito';
+					font-size: 2vh;
+					font-weight: bold;
+
+					span {
+						flex: 2;
+					}
+		
+					mat-icon {
+						transform: scale(1.8);
+					}
+				}
+			}
+				
+			&.--past {
+				li {
+					background-color: $foreground-disabled;
+					pointer-events: none;
+				}
+			}
+
+			&.--future {
+				li {
+					background-color: transparent;
+					border: dotted 2.5px $foreground-bright;
+					pointer-events: none;
+
+					button {
+						color: $foreground;
+					}
+				}
+			}
+		}
+
+		mat-tab-group {
+			width: 100%;
+			height: 100%;
+
+			.mat-mdc-tab-labels {
+				gap: 0 1vh;
+			}
+
+			.mat-mdc-tab-body-wrapper {
+				flex-grow: 1;
+			}
+		
+			.mdc-tab {
+				border-radius: 15px;
+				font-family: 'DarumadropOne';
+				font-size: clamp(1vh, 1vh + 1rem, 4vh);
+				text-align: center;
+				color: $foreground;
+				overflow: hidden;
+				height: auto;
+				padding: 2vh;
+				margin-bottom: 1vh;
+				filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.25));
+
+				&--active {
+					background-color: $foreground-brighter;
+					
+					.mdc-tab__text-label {
+						color: $accent-bright !important;
+					}
+				}
+			}
+
+			.mdc-tab-indicator {
+				display: none;
+			}
+		}
+	}
+}

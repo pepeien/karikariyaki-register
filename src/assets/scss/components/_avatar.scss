@@ -19,7 +19,7 @@ app-avatar {
 		justify-content: center;
 		background: transparent;
 		border-radius: 50%;
-		z-index: 101;
+		z-index: calc($max-z-index - 1);
 		position: absolute;
 		width: 100%;
 		height: 100%;

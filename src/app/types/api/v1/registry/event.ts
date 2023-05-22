@@ -13,11 +13,19 @@ import { BaseApi } from '@types';
 export class EventRegistryApiV1 extends BaseApi {
 	private _endpoint = `${this.root}/v1/admin/registry/event`;
 
+	public searchActive(): Observable<ApiResponseWrapper<Event[]>> {
+		const endpoint = new URL(this._endpoint);
+
+		return this.client.get<ApiResponseWrapper<Event[]>>(endpoint.href, {
+			withCredentials: true,
+		});
+	}
+
 	public search(params?: EventQueryableParams): Observable<ApiResponseWrapper<Event[]>> {
 		const endpoint = new URL(this._endpoint);
 
-		if (params?._id) {
-			endpoint.searchParams.append('id', params._id.trim());
+		if (params?.id) {
+			endpoint.searchParams.append('id', params.id.trim());
 		}
 
 		if (params?.name) {

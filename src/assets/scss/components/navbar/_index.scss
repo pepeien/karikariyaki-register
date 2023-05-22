@@ -8,7 +8,7 @@ app-navbar {
 	display: flex;
 	flex-direction: row;
 	overflow: hidden;
-	z-index: 101;
+	z-index: calc($max-z-index - 1);
 
 	*[data-was-dispatched="true"] {
 		display: none;

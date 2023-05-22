@@ -8,14 +8,14 @@ export class LoggedNavbarAnimation {
 			state(
 				'left',
 				style({
-					width: 'height: 3vh',
+					width: 'height: 0',
 					marginTop: 'auto',
 				}),
 			),
 			state(
 				'right',
 				style({
-					width: 'height: 3vh',
+					width: 'height: 0',
 					marginTop: 'auto',
 				}),
 			),
@@ -38,7 +38,7 @@ export class LoginNavbarAnimation {
 			state(
 				'left',
 				style({
-					height: '6vh',
+					height: '0',
 					marginTop: 'auto',
 				}),
 			),

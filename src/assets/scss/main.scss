@@ -6,3 +6,15 @@
 
 // Components
 @import './components/index';
+
+// Views
+@import './views//index';
+
+.root__view > app-avatar {
+	position: absolute;
+	height: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
+	width: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
+	top: 0;
+	right: 0;
+	margin: 2vh 2vh 0 0;
+}

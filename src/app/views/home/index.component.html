@@ -1,1 +1,43 @@
-Home View
+<main class="event">
+	<div *ngIf="availableEvents.length === 0" class="event__registry" >
+		<h1>No event was found</h1>
+		<app-logo></app-logo>
+		<div class="evetn__registry__form">
+			<form [formGroup]="eventRegistryForm">
+				<mat-form-field appearance="outline">
+					<mat-label>Name</mat-label>
+					<input matInput formControlName="name" required>
+				</mat-form-field>
+			</form>
+			<button>Create</button>
+		</div>
+	</div>
+	<div *ngIf="availableEvents.length > 0" class="event__selector">
+		<mat-tab-group [selectedIndex]="1">
+			<mat-tab label="Past Events">
+				<ul class="event__selector__list --past">
+					<li *ngFor="let event of pastEvents">
+						<button (click)="onEventClick(event)">{{ event.name }}</button>
+					</li>
+				</ul>
+			</mat-tab>
+			<mat-tab label="Current Events">
+				<ul class="event__selector__list">
+					<li *ngFor="let event of currentEvents">
+						<button (click)="onEventClick(event)">
+							<span>{{ event.name }}</span>
+							<mat-icon>chevron_right</mat-icon>
+						</button>
+					</li>
+				</ul>
+			</mat-tab>
+			<mat-tab label="Future Events">
+				<ul class="event__selector__list --future">
+					<li *ngFor="let event of futureEvents">
+						<button (click)="onEventClick(event)">{{ event.name }}</button>
+					</li>
+				</ul>
+			</mat-tab>
+		</mat-tab-group>
+	</div>
+</main>
