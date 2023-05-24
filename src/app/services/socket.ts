@@ -19,7 +19,8 @@ export class SocketService {
 	/**
 	 * In House
 	 */
-	private _socket = io(environment.rootSocketURL, {
+	private _socket = io(environment.wsURI, {
+		path: environment.wsPath,
 		withCredentials: true,
 	});
 
