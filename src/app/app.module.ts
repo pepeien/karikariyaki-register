@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 // Modules
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './app-shared.module';
-import { AvatarModule, NavbarModule } from '@components';
+import { AvatarModule, LoaderComponentModule, NavbarModule } from '@components';
 
 // Services
 import { ApiService } from '@services';
@@ -23,6 +23,7 @@ import { ApiService } from '@services';
 		BrowserAnimationsModule,
 		BrowserModule,
 		HttpClientModule,
+		LoaderComponentModule,
 		NavbarModule,
 		SharedModule,
 	],

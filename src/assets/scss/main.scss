@@ -10,11 +10,41 @@
 // Views
 @import './views//index';
 
-.root__view > app-avatar {
-	position: fixed;
-	height: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
-	width: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
-	bottom: 2vh;
-	right: 2vh;
-	z-index: $max-z-index - 1;
+body {
+	background-color: $background;
+}
+
+.root__view {
+	> app-avatar {
+		position: fixed;
+		height: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
+		width: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
+		bottom: 2vh;
+		right: 2vh;
+		z-index: $max-z-index - 2;
+	}
+
+	> app-loader .loader {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 100vh;
+		width: 100vw;
+		background-color: $background;
+		z-index: $max-z-index - 1;
+	
+		> app-logo {
+			position: absolute;
+			height: clamp(15vh, 15vh + 1rem, 25vh);
+			width: clamp(20vh, 20vh + 1rem, 30vh);
+	
+		
+			& svg {
+				fill: $foreground-disabled;
+				opacity: 0.5;
+			}
+		}
+	}
 }

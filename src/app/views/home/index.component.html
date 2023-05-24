@@ -1,11 +1,4 @@
-<main *ngIf="isHandshaking" class="placeholder">
-	<app-logo
-		[@breathe]="logoBreatheAnimationState"
-		(@breathe.done)="onLogoBreatheAnimationDone()"
-	>
-	</app-logo>
-</main>
-<main *ngIf="isHandshaking === false" class="event">
+<main class="event">
 	<app-logo></app-logo>
 	<div
 		class="event__registry"
@@ -16,14 +9,14 @@
 			<mat-icon>arrow_back</mat-icon>
 		</button>
 		<div class="event__registry__form">
-			<h1>New Event</h1>
+			<h1>{{ selectedLanguage['EVENT_NEW_TITLE'] }}</h1>
 			<form [formGroup]="eventRegistryForm">
 				<mat-form-field appearance="outline">
-					<mat-label>Name</mat-label>
+					<mat-label>{{ selectedLanguage['REGISTRY_EVENT_NAME_INPUT'] }}</mat-label>
 					<input matInput formControlName="name" required>
 				</mat-form-field>
 				<mat-form-field appearance="outline">
-					<mat-label>Date</mat-label>
+					<mat-label>{{ selectedLanguage['REGISTRY_EVENT_DATE_INPUT'] }}</mat-label>
 					<input matInput formControlName="date" [matDatepicker]="picker">
 					<mat-hint>MM/DD/YYYY</mat-hint>
 					<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -34,15 +27,18 @@
 		</div>
 	</div>
 	<div class="event__selector">
-		<h1>Events</h1>
+		<h1>{{ selectedLanguage['EVENT_VIEW_TITLE'] }}</h1>
 		<button class="--new-event" (click)="initEventCreation()">
 			<mat-icon>add</mat-icon>
-			<span>New Event</span>
+			<span>{{ selectedLanguage['EVENT_NEW_TITLE'] }}</span>
 		</button>
 		<mat-tab-group [selectedIndex]="1">
 			<mat-tab label="Finished">
 				<ul class="event__selector__list --past">
-					<li *ngFor="let event of pastEvents">
+					<li
+						*ngFor="let event of pastEvents; index as i"
+						[@slideToLeft]="{ value: '', params: { delay: i * 100 } }"
+					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>
 						</button>
@@ -51,7 +47,10 @@
 			</mat-tab>
 			<mat-tab label="Ongoing">
 				<ul class="event__selector__list">
-					<li *ngFor="let event of currentEvents">
+					<li
+						*ngFor="let event of currentEvents; index as i"
+						[@slideToLeft]="{ value: '', params: { delay: i * 100 } }"
+					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>
 							<mat-icon>chevron_right</mat-icon>
@@ -61,7 +60,10 @@
 			</mat-tab>
 			<mat-tab label="Upcoming">
 				<ul class="event__selector__list --future">
-					<li *ngFor="let event of futureEvents">
+					<li
+						*ngFor="let event of futureEvents; index as i"
+						[@slideToLeft]="{ value: '', params: { delay: i * 100 } }"
+					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>
 						</button>

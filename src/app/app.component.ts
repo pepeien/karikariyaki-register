@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Operator } from 'karikarihelper';
 
 // Service
-import { OperatorService } from '@services';
+import { LoadingService, OperatorService } from '@services';
 
 // Animations
-import { LoggedNavbarAnimation } from './animations/navbar';
+import { AutomaticAnimation, BasicAnimations, LoggedNavbarAnimation } from '@animations';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
+	animations: [BasicAnimations.breatheAnimation, AutomaticAnimation.slideInOut],
 })
 export class AppComponent implements OnInit {
 	/**

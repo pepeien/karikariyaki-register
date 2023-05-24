@@ -1,29 +1,34 @@
+import { AnimationEvent } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AnimationEvent } from '@angular/animations';
-import { io } from 'socket.io-client';
-import { ApiResponseWrapper, Event } from 'karikarihelper';
+import { Router } from '@angular/router';
+import { Event } from 'karikarihelper';
 
 // Animations
-import { BasicAnimations } from '@animations';
-import { ApiService } from '@services';
+import { AutomaticAnimation, BasicAnimations } from '@animations';
+
+// Services
+import { EventsService, LanguageService, LoadingService, SocketService } from '@services';
 
 @Component({
 	selector: 'app-home-view',
 	templateUrl: './index.component.html',
-	animations: [BasicAnimations.breatheAnimation, BasicAnimations.horizontalShrinkAnimation],
+	animations: [
+		AutomaticAnimation.slideToLeft,
+		BasicAnimations.breatheAnimation,
+		BasicAnimations.horizontalShrinkAnimation,
+	],
 })
 export class HomeViewComponent implements OnInit {
 	/**
 	 * Primitives
 	 */
 	public willCreateEvent = false;
-	public isHandshaking = true;
+	public isLoading = false;
 
 	/**
 	 * Animations
 	 */
-	public logoBreatheAnimationState: 'inhale' | 'exhale' = 'inhale';
 	public creationAnimationState: 'min' | 'max' = 'min';
 
 	/**
@@ -35,13 +40,6 @@ export class HomeViewComponent implements OnInit {
 	});
 
 	/**
-	 * Socket IO
-	 */
-	private _socket = io('ws://192.168.15.188:9006/reji', {
-		withCredentials: true,
-	});
-
-	/**
 	 * In House
 	 */
 	public availableEvents: Event[] = [];
@@ -49,49 +47,64 @@ export class HomeViewComponent implements OnInit {
 	public currentEvents: Event[] = [];
 	public futureEvents: Event[] = [];
 
-	constructor(private _apiService: ApiService) {}
+	/**
+	 * Language
+	 */
+	public selectedLanguage = LanguageService.DEFAULT_LANGUAGE;
+
+	constructor(
+		private _eventService: EventsService,
+		private _languageService: LanguageService,
+		private _loadingService: LoadingService,
+		private _router: Router,
+		private _socketService: SocketService,
+	) {}
 
 	ngOnInit(): void {
-		this.isHandshaking = true;
+		this._setupSocket();
 
-		this._socket.emit('sign-in');
+		this._eventService.availableEvents.subscribe({
+			next: (nextEvents) => {
+				this.cancelEventCreation();
 
-		this._socket.on('sign-in', (response) => {
-			this.isHandshaking = false;
+				this.availableEvents = nextEvents;
 
-			const serializedResponse = response as ApiResponseWrapper<Event[]>;
+				const currentBroadDate = new Date();
 
-			if (!serializedResponse.wasSuccessful || !serializedResponse.result) {
-				return;
-			}
+				currentBroadDate.setHours(0, 0, 0, 0);
 
-			this.availableEvents = serializedResponse.result;
+				this.pastEvents = this.availableEvents.filter(
+					(event) => new Date(event.date).getTime() < currentBroadDate.getTime(),
+				);
+				this.currentEvents = this.availableEvents.filter(
+					(event) => new Date(event.date).getTime() === currentBroadDate.getTime(),
+				);
+				this.futureEvents = this.availableEvents.filter(
+					(event) => new Date(event.date).getTime() > currentBroadDate.getTime(),
+				);
 
-			const currentBroadDate = new Date();
-
-			currentBroadDate.setHours(0, 0, 0, 0);
-
-			this.pastEvents = this.availableEvents.filter(
-				(event) => new Date(event.date).getTime() < currentBroadDate.getTime(),
-			);
-			this.currentEvents = this.availableEvents.filter(
-				(event) => new Date(event.date).getTime() === currentBroadDate.getTime(),
-			);
-			this.futureEvents = this.availableEvents.filter(
-				(event) => new Date(event.date).getTime() > currentBroadDate.getTime(),
-			);
+				this._loadingService.updateLoading(false);
+			},
 		});
 
-		this._socket.on('event-clock-in', (response) => {
-			const serializedResponse = response as ApiResponseWrapper<Event>;
+		this._languageService.language.subscribe({
+			next: (nextLanguage) => {
+				this.selectedLanguage = nextLanguage;
+			},
+		});
 
-			if (!serializedResponse.wasSuccessful || !serializedResponse.result) {
-				return;
-			}
+		this._loadingService.loading.subscribe({
+			next: (nextLoading) => {
+				this.isLoading = nextLoading;
+			},
 		});
 	}
 
 	public initEventCreation() {
+		if (this.isLoading) {
+			return;
+		}
+
 		this.eventRegistryForm.reset();
 
 		this.eventRegistryForm.controls.date.setValue(new Date());
@@ -100,51 +113,55 @@ export class HomeViewComponent implements OnInit {
 	}
 
 	public isEventCreationInvalid() {
-		return (
-			this.eventRegistryForm.invalid || this.isHandshaking || this.willCreateEvent === false
-		);
+		return this.eventRegistryForm.invalid || this.isLoading || this.willCreateEvent === false;
 	}
+
 	public cancelEventCreation() {
+		if (this.isLoading) {
+			return;
+		}
+
 		this.eventRegistryForm.reset();
 
 		this.creationAnimationState = 'min';
 	}
 
 	public onCreationAnimation(event: AnimationEvent) {
+		if (this.isLoading) {
+			return;
+		}
+
 		this.willCreateEvent = event.toState.trim().toLocaleLowerCase() === 'max';
 	}
 
 	public onEventCreation() {
-		if (this.isEventCreationInvalid()) {
+		if (this.isEventCreationInvalid() || this.isLoading) {
 			return;
 		}
 
-		this._apiService.V1.eventRegistry
-			.save({
-				name: this.eventRegistryForm.controls.name.value as string,
-				date: this.eventRegistryForm.controls.date.value as Date,
-			})
-			.subscribe({
-				next: (response) => {
-					if (response.wasSuccessful === false || !response.result) {
-						return;
-					}
-
-					this.cancelEventCreation();
-				},
-			});
+		this._socketService.socket.emit('event:create', {
+			name: this.eventRegistryForm.controls.name.value as string,
+			date: this.eventRegistryForm.controls.date.value as Date,
+		});
 	}
 
 	public onEventClick(event: Event) {
-		this._socket.emit('event-clock-in', event._id);
-	}
-
-	public onLogoBreatheAnimationDone() {
-		if (!this.logoBreatheAnimationState || this.isHandshaking === false) {
+		if (this.isLoading) {
 			return;
 		}
 
-		this.logoBreatheAnimationState =
-			this.logoBreatheAnimationState === 'inhale' ? 'exhale' : 'inhale';
+		this._socketService.socket.emit('event:join', event._id);
+
+		this._loadingService.updateLoading(true);
+
+		this._router.navigate(['event']);
+	}
+
+	private _setupSocket() {
+		this._loadingService.updateLoading(true);
+
+		this._eventService.updateSelectedEvent(null);
+
+		this._socketService.socket.emit('events:join');
 	}
 }
