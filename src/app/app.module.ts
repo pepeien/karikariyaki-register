@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 // Modules
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './app-shared.module';
-import { AvatarModule, LoaderComponentModule, NavbarModule } from '@components';
+import { FloatAvatarModule, LoaderComponentModule, NavbarModule } from '@components';
 
 // Services
 import { ApiService } from '@services';
@@ -19,10 +19,10 @@ import { ApiService } from '@services';
 	declarations: [AppComponent],
 	imports: [
 		AppRoutingModule,
-		AvatarModule,
 		BrowserAnimationsModule,
 		BrowserModule,
 		HttpClientModule,
+		FloatAvatarModule,
 		LoaderComponentModule,
 		NavbarModule,
 		SharedModule,

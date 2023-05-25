@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Operator } from 'karikarihelper';
+import { Langs, Operator } from 'karikarihelper';
 
 // Service
-import { LoadingService, OperatorService } from '@services';
+import { LanguageService, LoadingService, OperatorService } from '@services';
 
 // Animations
 import { AutomaticAnimation, BasicAnimations, LoggedNavbarAnimation } from '@animations';
@@ -19,13 +19,28 @@ export class AppComponent implements OnInit {
 	public isLoggedIn = false;
 
 	/**
+	 * Language
+	 */
+	public selectedLanguage = LanguageService.DEFAULT_LANGUAGE;
+
+	/**
 	 * In House
 	 */
+	public langList = Langs;
 	public operator: Operator | null = null;
 
-	constructor(private _operatorService: OperatorService) {}
+	constructor(
+		private _languageService: LanguageService,
+		private _operatorService: OperatorService,
+	) {}
 
 	ngOnInit(): void {
+		this._languageService.language.subscribe({
+			next: (nextLanguage) => {
+				this.selectedLanguage = nextLanguage;
+			},
+		});
+
 		this._operatorService.operator.subscribe({
 			next: (currentOperator) => {
 				if (!currentOperator) {
@@ -34,10 +49,9 @@ export class AppComponent implements OnInit {
 					return;
 				}
 
-				setTimeout(() => {
-					this.isLoggedIn = true;
-					this.operator = currentOperator;
-				}, LoggedNavbarAnimation.LOGGED_SWIPE_ANIMATION_DURATION_IS_MS);
+				this.isLoggedIn = true;
+
+				this.operator = currentOperator;
 			},
 			error: () => {
 				this.isLoggedIn = false;
