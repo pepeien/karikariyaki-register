@@ -1,15 +1,15 @@
-<main class="event">
+<main class="events" [@slideFromRight]>
 	<app-logo></app-logo>
 	<div
-		class="event__registry"
+		class="events__registry"
 		[@horizontalShrink]="creationAnimationState"
 		(@horizontalShrink.done)="onCreationAnimation($event)"
 	>
 		<button class="--back-event" (click)="cancelEventCreation()">
 			<mat-icon>arrow_back</mat-icon>
 		</button>
-		<div class="event__registry__form">
-			<h1>{{ selectedLanguage['EVENT_NEW_TITLE'] }}</h1>
+		<div class="events__registry__form">
+			<div class="events__title">{{ selectedLanguage['EVENT_NEW_TITLE'] }}</div>
 			<form [formGroup]="eventRegistryForm">
 				<mat-form-field appearance="outline">
 					<mat-label>{{ selectedLanguage['REGISTRY_EVENT_NAME_INPUT'] }}</mat-label>
@@ -26,18 +26,18 @@
 			<button (click)="onEventCreation()" [disabled]="isEventCreationInvalid()">Create</button>
 		</div>
 	</div>
-	<div class="event__selector">
-		<h1>{{ selectedLanguage['EVENT_VIEW_TITLE'] }}</h1>
+	<div class="events__selector">
+		<div class="events__title">{{ selectedLanguage['EVENT_VIEW_TITLE'] }}</div>
 		<button class="--new-event" (click)="initEventCreation()">
 			<mat-icon>add</mat-icon>
 			<span>{{ selectedLanguage['EVENT_NEW_TITLE'] }}</span>
 		</button>
 		<mat-tab-group [selectedIndex]="1">
-			<mat-tab label="Finished">
-				<ul class="event__selector__list --past">
+			<mat-tab [label]="selectedLanguage['EVENT_VIEW_FINISHED_TITLE']">
+				<ul class="events__selector__list --past">
 					<li
-						*ngFor="let event of pastEvents; index as i"
-						[@slideToLeft]="{ value: '', params: { delay: i * 100 } }"
+						*ngFor="let event of finishedEvents; index as i"
+						[@slideFromRight]="{ value: '', params: { delay: i * 100 } }"
 					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>
@@ -45,11 +45,11 @@
 					</li>
 				</ul>
 			</mat-tab>
-			<mat-tab label="Ongoing">
-				<ul class="event__selector__list">
+			<mat-tab [label]="selectedLanguage['EVENT_VIEW_ONGOING_TITLE']">
+				<ul class="events__selector__list">
 					<li
-						*ngFor="let event of currentEvents; index as i"
-						[@slideToLeft]="{ value: '', params: { delay: i * 100 } }"
+						*ngFor="let event of ongoingEvents; index as i"
+						[@slideFromRight]="{ value: '', params: { delay: i * 100 } }"
 					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>
@@ -58,11 +58,11 @@
 					</li>
 				</ul>
 			</mat-tab>
-			<mat-tab label="Upcoming">
-				<ul class="event__selector__list --future">
+			<mat-tab [label]="selectedLanguage['EVENT_VIEW_UPCOMING_TITLE']">
+				<ul class="events__selector__list --future">
 					<li
-						*ngFor="let event of futureEvents; index as i"
-						[@slideToLeft]="{ value: '', params: { delay: i * 100 } }"
+						*ngFor="let event of upcomingEvents; index as i"
+						[@slideFromRight]="{ value: '', params: { delay: i * 100 } }"
 					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>

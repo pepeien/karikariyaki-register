@@ -1,4 +1,4 @@
-.event {
+.events {
 	&__registry {
 		display: flex;
 		flex-direction: column;
@@ -49,13 +49,6 @@
 			mat-icon {
 				transform: scale(1.5);
 			}
-		}
-
-		h1 {
-			font-family: 'DarumadropOne';
-			font-size: clamp(6vh, 6vh + 1.2rem, 8vh);
-			text-align: center;
-			color: $foreground;
 		}
 
 		&__form {

@@ -14,7 +14,7 @@ import { EventsService, LanguageService, LoadingService, SocketService } from '@
 	selector: 'app-home-view',
 	templateUrl: './index.component.html',
 	animations: [
-		AutomaticAnimation.slideToLeft,
+		AutomaticAnimation.slideFromRight,
 		BasicAnimations.breatheAnimation,
 		BasicAnimations.horizontalShrinkAnimation,
 	],
@@ -42,10 +42,9 @@ export class HomeViewComponent implements OnInit {
 	/**
 	 * In House
 	 */
-	public availableEvents: Event[] = [];
-	public pastEvents: Event[] = [];
-	public currentEvents: Event[] = [];
-	public futureEvents: Event[] = [];
+	public finishedEvents: Event[] = [];
+	public ongoingEvents: Event[] = [];
+	public upcomingEvents: Event[] = [];
 
 	/**
 	 * Language
@@ -64,24 +63,44 @@ export class HomeViewComponent implements OnInit {
 		this._setupSocket();
 
 		this._eventService.availableEvents.subscribe({
-			next: (nextEvents) => {
+			next: (eventList) => {
 				this.cancelEventCreation();
 
-				this.availableEvents = nextEvents;
+				const currentDate = new Date();
 
-				const currentBroadDate = new Date();
+				currentDate.setHours(0, 0, 0, 0);
 
-				currentBroadDate.setHours(0, 0, 0, 0);
+				for (const event of eventList) {
+					const broadEventDate = new Date(event.date.toString().split('T')[0]);
+					const broadCurrentDate = new Date(currentDate.toISOString().split('T')[0]);
 
-				this.pastEvents = this.availableEvents.filter(
-					(event) => new Date(event.date).getTime() < currentBroadDate.getTime(),
-				);
-				this.currentEvents = this.availableEvents.filter(
-					(event) => new Date(event.date).getTime() === currentBroadDate.getTime(),
-				);
-				this.futureEvents = this.availableEvents.filter(
-					(event) => new Date(event.date).getTime() > currentBroadDate.getTime(),
-				);
+					if (
+						this._isEventFinished(broadEventDate, broadCurrentDate) &&
+						this._hasEvent(event, this.finishedEvents) === false
+					) {
+						this.finishedEvents.unshift(event);
+
+						continue;
+					}
+
+					if (
+						this._isEventOnGoing(broadEventDate, broadCurrentDate) &&
+						this._hasEvent(event, this.ongoingEvents) === false
+					) {
+						this.ongoingEvents.unshift(event);
+
+						continue;
+					}
+
+					if (
+						this._isEventUpcoming(broadEventDate, broadCurrentDate) &&
+						this._hasEvent(event, this.upcomingEvents) === false
+					) {
+						this.upcomingEvents.unshift(event);
+
+						continue;
+					}
+				}
 
 				this._loadingService.updateLoading(false);
 			},
@@ -150,11 +169,9 @@ export class HomeViewComponent implements OnInit {
 			return;
 		}
 
-		this._socketService.socket.emit('event:join', event._id);
-
 		this._loadingService.updateLoading(true);
 
-		this._router.navigate(['event']);
+		this._router.navigate(['event', event._id]);
 	}
 
 	private _setupSocket() {
@@ -163,5 +180,35 @@ export class HomeViewComponent implements OnInit {
 		this._eventService.updateSelectedEvent(null);
 
 		this._socketService.socket.emit('events:join');
+	}
+
+	private _isEventFinished(eventDate: Date, currentDate: Date) {
+		return eventDate < currentDate;
+	}
+
+	private _isEventOnGoing(eventDate: Date, currentDate: Date) {
+		return (
+			eventDate.getDate() === currentDate.getDate() &&
+			eventDate.getMonth() === currentDate.getMonth() &&
+			eventDate.getFullYear() === currentDate.getFullYear()
+		);
+	}
+
+	private _isEventUpcoming(eventDate: Date, currentDate: Date) {
+		return eventDate > currentDate;
+	}
+
+	private _hasEvent(target: Event, eventList: Event[]): boolean {
+		let hasEvent = false;
+
+		for (const event of eventList) {
+			if (event._id === target._id) {
+				hasEvent = true;
+
+				break;
+			}
+		}
+
+		return hasEvent;
 	}
 }
