@@ -1,3 +1,64 @@
-<div *ngIf="!selectedEvent" class="placeholder">
-	<h1>No event was selected</h1>
-</div>
+<main
+	*ngIf="selectedEvent"
+	class="event"
+	[@slideFromLeft]
+>
+	<app-logo></app-logo>
+	<div
+		class="event__registry"
+		[@horizontalShrink]="creationAnimationState"
+		(@horizontalShrink.done)="onCreationAnimation($event)"
+	>
+		<button class="--back-event" (click)="cancelEventCreation()">
+			<mat-icon>arrow_back</mat-icon>
+		</button>
+		<div class="events__registry__form">
+			<div class="event__title">{{ selectedLanguage['EVENT_ORDER_NEW_TITLE'] }}</div>
+		</div>
+	</div>
+	<div class="event__selector">
+		<div class="event__title">{{ selectedEvent.name }}</div>
+		<button class="--new-event" (click)="initEventCreation()">
+			<mat-icon>add</mat-icon>
+			<span>{{ selectedLanguage['EVENT_ORDER_NEW_TITLE'] }}</span>
+		</button>
+		<mat-tab-group [selectedIndex]="1">
+			<mat-tab [label]="selectedLanguage['EVENT_ORDER_VIEW_PICKED_UP_TITLE']">
+				<ul class="event__selector__list --past">
+					<li
+						*ngFor="let order of pickedupOrders; index as i"
+						[@pop]="{ value: '', params: { delay: i * 100 } }"
+					>
+						<button>
+							<span>{{ order.client }}</span>
+						</button>
+					</li>
+				</ul>
+			</mat-tab>
+			<mat-tab [label]="selectedLanguage['EVENT_ORDER_VIEW_COOKING_TITLE']">
+				<ul class="event__selector__list">
+					<li
+						*ngFor="let order of cookingOrders; index as i"
+						[@pop]="{ value: '', params: { delay: i * 100 } }"
+					>
+						<button>
+							<span>{{ order.client }}</span>
+						</button>
+					</li>
+				</ul>
+			</mat-tab>
+			<mat-tab [label]="selectedLanguage['EVENT_ORDER_VIEW_READY_TITLE']">
+				<ul class="event__selector__list --future">
+					<li
+						*ngFor="let order of readyOrders; index as i"
+						[@pop]="{ value: '', params: { delay: i * 100 } }"
+					>
+						<button>
+							<span>{{ order.client }}</span>
+						</button>
+					</li>
+				</ul>
+			</mat-tab>
+		</mat-tab-group>
+	</div>
+</main>

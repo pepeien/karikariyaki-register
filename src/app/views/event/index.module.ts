@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatStepperModule } from '@angular/material/stepper';
 
 // Bundles
 import { FormsBundle, MaterialBundle } from '@imports';
@@ -9,19 +8,11 @@ import { FormsBundle, MaterialBundle } from '@imports';
 import { EventViewComponent } from './index.component';
 
 // Modules
-import { AvatarModule, LogoModule, TableModule } from '@components';
+import { AvatarModule, LogoModule } from '@components';
 
 @NgModule({
 	declarations: [EventViewComponent],
-	imports: [
-		AvatarModule,
-		CommonModule,
-		FormsBundle,
-		LogoModule,
-		MaterialBundle,
-		MatStepperModule,
-		TableModule,
-	],
+	imports: [AvatarModule, CommonModule, FormsBundle, LogoModule, MaterialBundle],
 	exports: [EventViewComponent],
 })
 export class EventViewModule {}

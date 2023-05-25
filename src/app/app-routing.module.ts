@@ -11,7 +11,7 @@ const routes: Routes = [
 		component: HomeViewComponent,
 	},
 	{
-		path: 'event',
+		path: 'event/:id',
 		pathMatch: 'full',
 		component: EventViewComponent,
 	},
