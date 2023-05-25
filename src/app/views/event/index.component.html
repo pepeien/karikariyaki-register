@@ -9,9 +9,6 @@
 		[@horizontalShrink]="creationAnimationState"
 		(@horizontalShrink.done)="onCreationAnimation($event)"
 	>
-		<button class="--back-event" (click)="cancelEventCreation()">
-			<mat-icon>arrow_back</mat-icon>
-		</button>
 		<div class="events__registry__form">
 			<div class="event__title">{{ selectedLanguage['EVENT_ORDER_NEW_TITLE'] }}</div>
 		</div>
@@ -61,4 +58,7 @@
 			</mat-tab>
 		</mat-tab-group>
 	</div>
+	<button class="--back-event" (click)="onCancelEvent()">
+		<mat-icon>arrow_back</mat-icon>
+	</button>
 </main>

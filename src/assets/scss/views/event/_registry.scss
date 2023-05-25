@@ -13,44 +13,6 @@
 		overflow: hidden;
 		align-self: flex-start;
 
-		.--back-event {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			position: absolute;
-			bottom: 2vh;
-			left: 2vh;
-			background-color: $foreground;
-			color: $accent-bright;
-			font-family: 'DarumadropOne';
-			font-size: 2.5vh;
-			border-radius: 12px;
-			padding: 0 4vh;
-			height: 8vh;
-			margin: 0 auto;
-
-			-webkit-box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.1);
-			-moz-box-shadow: 	4px 4px 4px 0px rgba(0,0,0,0.1);
-			box-shadow: 		4px 4px 4px 0px rgba(0,0,0,0.1);
-
-			-webkit-transition: background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-			-moz-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-			-ms-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-			-o-transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-			transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-
-			&:hover {
-				cursor: pointer;
-
-				background-color: $foreground-brighter;
-				border-color: $foreground-brighter;
-			}
-
-			mat-icon {
-				transform: scale(1.5);
-			}
-		}
-
 		&__form {
 			form {
 				display: flex;

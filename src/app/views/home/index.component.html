@@ -23,7 +23,9 @@
 					<mat-datepicker #picker></mat-datepicker>
 				</mat-form-field>
 			</form>
-			<button (click)="onEventCreation()" [disabled]="isEventCreationInvalid()">Create</button>
+			<button (click)="onEventCreation()" [disabled]="isEventCreationInvalid()">
+				{{ selectedLanguage['REGISTRY_EDITOR_CREATION_ACTION'] }}
+			</button>
 		</div>
 	</div>
 	<div class="events__selector">

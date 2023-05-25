@@ -48,7 +48,7 @@ body {
 		position: fixed;
 		height: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
 		width: clamp($avatar-icon-min-size, 5vh + 1rem, $avatar-icon-max-size);
-		top: 92dvh;
+		bottom: 1vh;
 		right: 1vh;
 		z-index: $max-z-index - 2;
 	}

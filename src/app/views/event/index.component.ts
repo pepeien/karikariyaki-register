@@ -1,7 +1,7 @@
 import { AnimationEvent } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponseWrapper, Event, EventOrder, OrderStatus } from 'karikarihelper';
 
 // Animations
@@ -64,6 +64,7 @@ export class EventViewComponent implements OnInit {
 		private _eventService: EventsService,
 		private _languageService: LanguageService,
 		private _loadingService: LoadingService,
+		private _router: Router,
 		private _socketService: SocketService,
 	) {}
 
@@ -166,12 +167,18 @@ export class EventViewComponent implements OnInit {
 		this.creationAnimationState = 'max';
 	}
 
-	public cancelEventCreation() {
+	public onCancelEvent() {
 		if (this.isLoading) {
 			return;
 		}
 
-		this.creationAnimationState = 'min';
+		if (this.willCreateEventOrder) {
+			this.creationAnimationState = 'min';
+
+			return;
+		}
+
+		this._router.navigate(['/']);
 	}
 
 	public onCreationAnimation(event: AnimationEvent) {
