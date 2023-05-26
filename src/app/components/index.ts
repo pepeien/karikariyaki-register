@@ -1,3 +1,4 @@
+export { AutocompleteComponent, AutocompleteModule } from './autocomplete';
 export { AvatarComponent, AvatarModule } from './avatar';
 export { DialogComponent, DialogModule, DialogProps } from './dialog';
 export { FloatAvatarComponent, FloatAvatarModule } from './float-avatar';

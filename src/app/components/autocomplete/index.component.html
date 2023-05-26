@@ -1,0 +1,32 @@
+<form [formGroup]="formGroup">
+	<mat-form-field appearance="outline">
+		<mat-label>{{ label }}</mat-label>
+		<input
+			matInput
+			[matAutocomplete]="autoComplete"
+			[formControlName]="controlName"
+		>
+		<mat-autocomplete
+			#autoComplete="matAutocomplete"
+			[displayWith]="canChooseMultiple ? execMultipleOptionGetter.bind(this) : execOptionGetter.bind(this)"
+		>
+			<div
+				*ngFor="let value of filteredData | async"
+				[class]="canChooseMultiple ? 'auto-complete__option' : undefined"
+				(click)="canChooseMultiple ? onCheckboxClick($event, value) : undefined"
+			>
+				<mat-checkbox
+					*ngIf="canChooseMultiple"
+					[color]="'primary'"
+					[disableRipple]="true"
+					[checked]="isCheckboxSelected(value)"
+					(click)="onCheckboxClick($event, value)"
+				>
+				</mat-checkbox>
+				<mat-option [value]="value">
+					<span>{{ execOptionGetter(value) }}</span>
+				</mat-option>
+			</div>
+		</mat-autocomplete>
+	</mat-form-field>
+</form>
