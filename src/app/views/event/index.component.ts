@@ -2,7 +2,14 @@ import { AnimationEvent } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiResponseWrapper, Event, EventOrder, OrderStatus } from 'karikarihelper';
+import {
+	ApiResponseWrapper,
+	Event,
+	EventOrder,
+	EventOrderCreatableParams,
+	OrderStatus,
+	Product,
+} from 'karikarihelper';
 
 // Animations
 import { AutomaticAnimation, BasicAnimations } from '@animations';
@@ -42,18 +49,20 @@ export class EventViewComponent implements OnInit {
 	 * Forms
 	 */
 	public eventOrderRegistryForm = new FormGroup({
-		name: new FormControl('', [Validators.required]),
-		date: new FormControl(new Date(), [Validators.required]),
+		client: new FormControl('', [Validators.required]),
+		items: new FormControl({ value: '', disabled: true }, [Validators.required]),
 	});
 
 	/**
 	 * Language
 	 */
-	public selectedLanguage = LanguageService.DEFAULT_LANGUAGE;
+	public languageSource = LanguageService.DEFAULT_LANGUAGE;
 
 	/**
 	 * In House
 	 */
+	public availableProducts: Product[] = [];
+	public selectedProducts: Product[] = [];
 	public selectedEvent: Event | null = null;
 	public pickedupOrders: EventOrder[] = [];
 	public cookingOrders: EventOrder[] = [];
@@ -61,6 +70,7 @@ export class EventViewComponent implements OnInit {
 
 	constructor(
 		private _activedRoute: ActivatedRoute,
+		private _apiService: ApiService,
 		private _eventService: EventsService,
 		private _languageService: LanguageService,
 		private _loadingService: LoadingService,
@@ -146,7 +156,7 @@ export class EventViewComponent implements OnInit {
 
 		this._languageService.language.subscribe({
 			next: (nextLanguage) => {
-				this.selectedLanguage = nextLanguage;
+				this.languageSource = nextLanguage;
 			},
 		});
 
@@ -159,12 +169,58 @@ export class EventViewComponent implements OnInit {
 		this._socketService.socket.emit('event:join', eventId);
 	}
 
+	public displayProductAutocomplete(product: Product) {
+		if (!product) {
+			return '';
+		}
+
+		return product.name;
+	}
+
+	public getSingleProducts(): Product[] {
+		const currentItemsValue = this.eventOrderRegistryForm.controls.items.value;
+
+		if (typeof currentItemsValue === 'string') {
+			return [];
+		}
+
+		return currentItemsValue as unknown as Product[];
+	}
+
 	public initEventCreation() {
 		if (this.isLoading) {
 			return;
 		}
 
 		this.creationAnimationState = 'max';
+	}
+
+	public isEventOrderCreationInvalid() {
+		return (
+			this.eventOrderRegistryForm.invalid ||
+			this.getSingleProducts().length === 0 ||
+			this.isLoading ||
+			this.willCreateEventOrder === false
+		);
+	}
+
+	public onEventOrderCreation() {
+		if (this.isEventOrderCreationInvalid() || this.isLoading) {
+			return;
+		}
+
+		const extractedItemsIds: string[] = [];
+
+		this.getSingleProducts().forEach((item) => {
+			extractedItemsIds.push(item._id.toString());
+		});
+
+		this._socketService.socket.emit('orders:create', {
+			itemsId: extractedItemsIds,
+			clientName: this.eventOrderRegistryForm.controls.client.value as string,
+		} as EventOrderCreatableParams);
+
+		this.onCancelEvent();
 	}
 
 	public onCancelEvent() {
@@ -185,6 +241,8 @@ export class EventViewComponent implements OnInit {
 		if (this.isLoading) {
 			return;
 		}
+
+		this._updateAvailableProducts();
 
 		this.willCreateEventOrder = event.toState.trim().toLocaleLowerCase() === 'max';
 	}
@@ -211,5 +269,17 @@ export class EventViewComponent implements OnInit {
 		}
 
 		orderList.splice(foundTargetIndex, 1);
+	}
+
+	private _updateAvailableProducts() {
+		this._apiService.V1.productRegistry.search().subscribe({
+			next: (response) => {
+				if (response.wasSuccessful === false || !response.result) {
+					return;
+				}
+
+				this.availableProducts = response.result;
+			},
+		});
 	}
 }

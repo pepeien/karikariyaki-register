@@ -9,18 +9,41 @@
 		[@horizontalShrink]="creationAnimationState"
 		(@horizontalShrink.done)="onCreationAnimation($event)"
 	>
-		<div class="events__registry__form">
-			<div class="event__title">{{ selectedLanguage['EVENT_ORDER_NEW_TITLE'] }}</div>
-		</div>
+		<div class="event__title">{{ languageSource['EVENT_ORDER_NEW_TITLE'] }}</div>
+		<form [formGroup]="eventOrderRegistryForm">
+			<mat-form-field appearance="outline">
+				<mat-label>{{ languageSource['REGISTRY_EVENT_ORDER_CLIENT_INPUT'] }}</mat-label>
+				<input matInput formControlName="client" required>
+			</mat-form-field>
+			<div class="event__registry__items">
+				<app-auto-complete
+					[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
+					[data]="availableProducts"
+					[formGroup]="eventOrderRegistryForm"
+					[controlName]="'items'"
+					[optionGetter]="displayProductAutocomplete"
+					[canChooseMultiple]="true"
+				>
+				</app-auto-complete>
+				<ul>
+					<li *ngFor="let selectedProduct of getSingleProducts(); index as i" [@pop]>
+						{{ selectedProduct.name }}
+					</li>
+				</ul>
+			</div>
+		</form>
+		<button (click)="onEventOrderCreation()" [disabled]="isEventOrderCreationInvalid()">
+			{{ languageSource['REGISTRY_EDITOR_CREATION_ACTION'] }}
+		</button>
 	</div>
 	<div class="event__selector">
 		<div class="event__title">{{ selectedEvent.name }}</div>
 		<button class="--new-event" (click)="initEventCreation()">
 			<mat-icon>add</mat-icon>
-			<span>{{ selectedLanguage['EVENT_ORDER_NEW_TITLE'] }}</span>
+			<span>{{ languageSource['EVENT_ORDER_NEW_TITLE'] }}</span>
 		</button>
 		<mat-tab-group [selectedIndex]="1">
-			<mat-tab [label]="selectedLanguage['EVENT_ORDER_VIEW_PICKED_UP_TITLE']">
+			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_PICKED_UP_TITLE']">
 				<ul class="event__selector__list --past">
 					<li
 						*ngFor="let order of pickedupOrders; index as i"
@@ -32,7 +55,7 @@
 					</li>
 				</ul>
 			</mat-tab>
-			<mat-tab [label]="selectedLanguage['EVENT_ORDER_VIEW_COOKING_TITLE']">
+			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_COOKING_TITLE']">
 				<ul class="event__selector__list">
 					<li
 						*ngFor="let order of cookingOrders; index as i"
@@ -44,7 +67,7 @@
 					</li>
 				</ul>
 			</mat-tab>
-			<mat-tab [label]="selectedLanguage['EVENT_ORDER_VIEW_READY_TITLE']">
+			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_READY_TITLE']">
 				<ul class="event__selector__list --future">
 					<li
 						*ngFor="let order of readyOrders; index as i"

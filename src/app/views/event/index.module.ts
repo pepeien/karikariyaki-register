@@ -8,11 +8,18 @@ import { FormsBundle, MaterialBundle } from '@imports';
 import { EventViewComponent } from './index.component';
 
 // Modules
-import { AvatarModule, LogoModule } from '@components';
+import { AutocompleteModule, AvatarModule, LogoModule } from '@components';
 
 @NgModule({
 	declarations: [EventViewComponent],
-	imports: [AvatarModule, CommonModule, FormsBundle, LogoModule, MaterialBundle],
+	imports: [
+		AutocompleteModule,
+		AvatarModule,
+		CommonModule,
+		FormsBundle,
+		LogoModule,
+		MaterialBundle,
+	],
 	exports: [EventViewComponent],
 })
 export class EventViewModule {}
