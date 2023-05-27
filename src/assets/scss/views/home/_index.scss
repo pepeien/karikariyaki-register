@@ -22,9 +22,6 @@
 	}
 
 	&__title {
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		font-family: 'Nunito';
 		font-size: clamp(6vh, 6vh + 1.2rem, 8vh);
 		font-weight: bold;
