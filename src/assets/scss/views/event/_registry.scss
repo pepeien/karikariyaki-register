@@ -2,14 +2,113 @@
 	&__registry {
 		display: flex;
 		flex-direction: column;
-		padding-top: 5vh;
 		align-items: center;
 		position: absolute;
 		width: 100%;
+		height: 100%;
 		background-color: $background;
 		z-index: $max-z-index - 3;
 		overflow: hidden;
 		align-self: flex-start;
+
+		.event__title {
+			margin-top: 4vh;
+		}
+
+		&__product {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			gap: 0;
+
+			button {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 12px;
+				padding: 0 2vh;
+				height: 6.5vh;
+				background-color: transparent;
+				border: solid 2px transparent;
+				border-radius: $app-input-border-raidus;
+				border-color: $foreground-bright;
+				outline: transparent;
+				font-size: 1.2rem;
+				color: $foreground-bright;
+	
+				transition: color ease-in-out 300ms, border-color ease-in-out 300ms, background-color ease-in-out 300ms;
+		
+				&:disabled {
+					color: $foreground-bright;
+					border-color: $foreground-disabled;
+					background-color: $foreground-disabled;
+					pointer-events: none;
+	
+					&:hover {
+						cursor: default;
+					}
+				}
+	
+				&:not([disabled]) {
+					&:hover {
+						cursor: pointer;
+					}
+		
+					&:hover, &:focus {
+						border-color: transparent;
+						background-color: $foreground-brighter;
+						color: $accent-bright;
+					}
+				}
+			}
+
+			> div {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				gap: 0 1vh;
+				height: 6.5vh;
+				margin-bottom: 3vh;
+
+				input {
+					font-family: 'DarumadropOne';
+					font-size: 1.2rem;
+					height: 6vh;
+					min-width: 4vh;
+					width: 100%;
+					background-color: transparent;
+					border-radius: $app-input-border-raidus;
+					border: solid 1px $foreground-bright;
+					text-align: center;
+
+					&::-webkit-outer-spin-button,
+					&::-webkit-inner-spin-button {
+					  	-webkit-appearance: none;
+					  	margin: 0;
+					}
+
+					&[type=number] {
+					  	-moz-appearance: textfield;
+						appearance: textfield;
+					}
+
+					&:focus {
+						border-color: $foreground-bright !important;
+						border-width: 2px;
+					}
+				}
+
+				button {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					height: 4vh;
+					width: 5vh;
+					padding: 0;
+					border-radius: 50%;
+				}
+			}
+		}
 
 		> form {
 			display: flex;
@@ -119,7 +218,6 @@
 					color: $accent-bright;
 				}
 			}
-			
 		}
 
 		&__items {
@@ -152,5 +250,31 @@
 				}
 			}
 		}
+	}
+}
+
+@media (min-width: 821px) {
+	.event {
+		&__registry {
+			&__product {
+				flex-direction: row;
+				gap: 0 2vh;
+	
+				> div {
+					gap: 0 1vh;
+					margin-bottom: 0;
+					
+					input {
+						width: 10vh;
+						height: 4vh;
+					}
+
+					button {
+						width: 4vh;
+					}
+				}
+			}
+		}
+
 	}
 }

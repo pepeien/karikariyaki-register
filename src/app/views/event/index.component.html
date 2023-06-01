@@ -16,17 +16,38 @@
 				<input matInput formControlName="client" required>
 			</mat-form-field>
 			<div class="event__registry__items">
-				<app-auto-complete
-					[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
-					[data]="availableProducts"
-					[formGroup]="eventOrderRegistryForm"
-					[controlName]="'items'"
-					[optionGetter]="displayProductAutocomplete"
-					[canChooseMultiple]="true"
-				>
-				</app-auto-complete>
+				<div class="event__registry__product">
+					<app-auto-complete
+						[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
+						[data]="availableProducts"
+						[formGroup]="eventOrderRegistryForm"
+						[controlName]="'items'"
+						[optionGetter]="displayProductAutocomplete"
+						(onSelection)="onProductSelection($event)"
+					>
+					</app-auto-complete>
+					<div>
+						<button (click)="onProductCountDecrement()" [disabled]="productCount <= MIN_PRODUCT_COUNT">
+							<mat-icon>remove</mat-icon>
+						</button>
+						<input
+							matInput
+							[value]="productCount"
+							[min]="MIN_PRODUCT_COUNT"
+							[max]="MAX_PRODUCT_COUNT"
+							type="number"
+							(keyup)="onManualProductCount($event.target)"
+						>
+						<button (click)="onProductCountIncrement()" [disabled]="productCount >= MAX_PRODUCT_COUNT">
+							<mat-icon>add</mat-icon>
+						</button>
+					</div>
+					<button (click)="onProductConfirmation()" [disabled]="!selectedProduct">
+						<mat-icon>check</mat-icon>
+					</button>
+				</div>
 				<ul>
-					<li *ngFor="let selectedProduct of getSingleProducts(); index as i" [@pop]>
+					<li *ngFor="let selectedProduct of selectedProducts; index as i" [@pop]>
 						{{ selectedProduct.name }}
 					</li>
 				</ul>
@@ -45,10 +66,7 @@
 		<mat-tab-group [selectedIndex]="1">
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_PICKED_UP_TITLE']">
 				<ul class="event__selector__list --past">
-					<li
-						*ngFor="let order of pickedupOrders; index as i"
-						[@pop]="{ value: '', params: { delay: i * 100 } }"
-					>
+					<li *ngFor="let order of pickedupOrders" [@pop]>
 						<button>
 							<span>{{ order.client }}</span>
 						</button>
@@ -57,10 +75,7 @@
 			</mat-tab>
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_COOKING_TITLE']">
 				<ul class="event__selector__list">
-					<li
-						*ngFor="let order of cookingOrders; index as i"
-						[@pop]="{ value: '', params: { delay: i * 100 } }"
-					>
+					<li *ngFor="let order of cookingOrders" [@pop]>
 						<button>
 							<span>{{ order.client }}</span>
 						</button>
@@ -69,10 +84,7 @@
 			</mat-tab>
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_READY_TITLE']">
 				<ul class="event__selector__list --future">
-					<li
-						*ngFor="let order of readyOrders; index as i"
-						[@pop]="{ value: '', params: { delay: i * 100 } }"
-					>
+					<li *ngFor="let order of readyOrders" [@pop]>
 						<button>
 							<span>{{ order.client }}</span>
 						</button>

@@ -35,10 +35,18 @@ import {
 })
 export class EventViewComponent implements OnInit {
 	/**
+	 * Consts
+	 */
+	public readonly MIN_PRODUCT_COUNT = 1;
+	public readonly MAX_PRODUCT_COUNT = 100;
+
+	/**
 	 * Primitives
 	 */
 	public willCreateEventOrder = false;
 	public isLoading = false;
+
+	public productCount = 1;
 
 	/**
 	 * Animations
@@ -62,6 +70,7 @@ export class EventViewComponent implements OnInit {
 	 * In House
 	 */
 	public availableProducts: Product[] = [];
+	public selectedProduct: Product | null = null;
 	public selectedProducts: Product[] = [];
 	public selectedEvent: Event | null = null;
 	public pickedupOrders: EventOrder[] = [];
@@ -84,6 +93,14 @@ export class EventViewComponent implements OnInit {
 		if (!eventId) {
 			return;
 		}
+
+		this._socketService.socket.on('event:error', (response) => {
+			console.log(response);
+		});
+
+		this._socketService.socket.on('orders:error', (response) => {
+			console.log(response);
+		});
 
 		this._socketService.socket.on('orders:refresh', (response) => {
 			const serializedResponse = response as ApiResponseWrapper<EventOrder[]>;
@@ -177,20 +194,16 @@ export class EventViewComponent implements OnInit {
 		return product.name;
 	}
 
-	public getSingleProducts(): Product[] {
-		const currentItemsValue = this.eventOrderRegistryForm.controls.items.value;
-
-		if (typeof currentItemsValue === 'string') {
-			return [];
-		}
-
-		return currentItemsValue as unknown as Product[];
-	}
-
 	public initEventCreation() {
 		if (this.isLoading) {
 			return;
 		}
+
+		this.eventOrderRegistryForm.reset();
+
+		this.selectedProduct = null;
+		this.selectedProducts = [];
+		this.productCount = this.MIN_PRODUCT_COUNT;
 
 		this.creationAnimationState = 'max';
 	}
@@ -198,7 +211,7 @@ export class EventViewComponent implements OnInit {
 	public isEventOrderCreationInvalid() {
 		return (
 			this.eventOrderRegistryForm.invalid ||
-			this.getSingleProducts().length === 0 ||
+			this.selectedProducts.length === 0 ||
 			this.isLoading ||
 			this.willCreateEventOrder === false
 		);
@@ -211,7 +224,7 @@ export class EventViewComponent implements OnInit {
 
 		const extractedItemsIds: string[] = [];
 
-		this.getSingleProducts().forEach((item) => {
+		this.selectedProducts.forEach((item) => {
 			extractedItemsIds.push(item._id.toString());
 		});
 
@@ -245,6 +258,73 @@ export class EventViewComponent implements OnInit {
 		this._updateAvailableProducts();
 
 		this.willCreateEventOrder = event.toState.trim().toLocaleLowerCase() === 'max';
+	}
+
+	public onManualProductCount(target: EventTarget | null) {
+		if (!target) {
+			return;
+		}
+
+		const typedTarget = target as HTMLInputElement;
+
+		const valueAsNumber = parseInt(typedTarget.value);
+
+		if (isNaN(valueAsNumber) || valueAsNumber < this.MIN_PRODUCT_COUNT) {
+			this.productCount = this.MIN_PRODUCT_COUNT;
+
+			typedTarget.value = this.productCount.toString();
+
+			return;
+		}
+
+		if (valueAsNumber > this.MAX_PRODUCT_COUNT) {
+			this.productCount = this.MAX_PRODUCT_COUNT;
+
+			typedTarget.value = this.productCount.toString();
+
+			return;
+		}
+
+		this.productCount = valueAsNumber;
+	}
+
+	public onProductCountDecrement() {
+		if (
+			this.productCount < this.MIN_PRODUCT_COUNT ||
+			this.productCount > this.MAX_PRODUCT_COUNT
+		) {
+			return;
+		}
+
+		this.productCount--;
+	}
+
+	public onProductCountIncrement() {
+		this.productCount++;
+	}
+
+	public onProductConfirmation() {
+		if (!this.selectedProduct) {
+			return;
+		}
+
+		for (let i = 0; i < this.productCount; i++) {
+			this.selectedProducts.push(this.selectedProduct);
+		}
+
+		this.productCount = this.MIN_PRODUCT_COUNT;
+
+		this.eventOrderRegistryForm.reset();
+	}
+
+	public onProductSelection(nextSelectedProducts: Product[]) {
+		if (!nextSelectedProducts) {
+			this.selectedProduct = null;
+
+			return;
+		}
+
+		this.selectedProduct = nextSelectedProducts[0];
 	}
 
 	private _hasOrder(target: EventOrder, orderList: EventOrder[]): boolean {

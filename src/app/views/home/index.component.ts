@@ -71,6 +71,12 @@ export class HomeViewComponent implements OnInit {
 				currentDate.setHours(0, 0, 0, 0);
 
 				for (const event of eventList) {
+					if (event.isOpen) {
+						this.ongoingEvents.unshift(event);
+
+						continue;
+					}
+
 					const broadEventDate = new Date(event.date.toString().split('T')[0]);
 					const broadCurrentDate = new Date(currentDate.toISOString().split('T')[0]);
 
@@ -79,15 +85,6 @@ export class HomeViewComponent implements OnInit {
 						this._hasEvent(event, this.finishedEvents) === false
 					) {
 						this.finishedEvents.unshift(event);
-
-						continue;
-					}
-
-					if (
-						this._isEventOnGoing(broadEventDate, broadCurrentDate) &&
-						this._hasEvent(event, this.ongoingEvents) === false
-					) {
-						this.ongoingEvents.unshift(event);
 
 						continue;
 					}

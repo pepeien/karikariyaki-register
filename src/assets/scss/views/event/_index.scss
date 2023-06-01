@@ -27,7 +27,8 @@
 		font-weight: bold;
 		text-align: center;
 		color: $foreground;
-		height: 15vh;
+		height: 12vh;
+		padding: 1vh 0;
 		width: 100%;
 		white-space: nowrap;
 		overflow: hidden;
@@ -39,8 +40,8 @@
 		justify-content: center;
 		align-items: center;
 		position: fixed;
-		bottom: 1.25vh;
-		left: 2vh;
+		bottom: 1vh;
+		left: 1vh;
 		background-color: $foreground;
 		color: $accent-bright;
 		font-family: 'DarumadropOne';
@@ -70,6 +71,14 @@
 
 		mat-icon {
 			transform: scale(1.5);
+		}
+	}
+}
+
+@media (min-width: 821px) {
+	.event {
+		&__title {
+			height: 15vh;
 		}
 	}
 }
