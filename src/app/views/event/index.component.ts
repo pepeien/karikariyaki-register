@@ -10,6 +10,10 @@ import {
 	OrderStatus,
 	Product,
 } from 'karikarihelper';
+import { v4 } from 'uuid';
+
+// Types
+import { Item } from '@interfaces';
 
 // Animations
 import { AutomaticAnimation, BasicAnimations } from '@animations';
@@ -43,7 +47,7 @@ export class EventViewComponent implements OnInit {
 	/**
 	 * Primitives
 	 */
-	public willCreateEventOrder = false;
+	public willCreateEventOrder = true;
 	public isLoading = false;
 
 	public productCount = 1;
@@ -51,14 +55,14 @@ export class EventViewComponent implements OnInit {
 	/**
 	 * Animations
 	 */
-	public creationAnimationState: 'min' | 'max' = 'min';
+	public creationAnimationState: 'min' | 'max' = 'max';
 
 	/**
 	 * Forms
 	 */
 	public eventOrderRegistryForm = new FormGroup({
 		client: new FormControl('', [Validators.required]),
-		items: new FormControl({ value: '', disabled: true }, [Validators.required]),
+		items: new FormControl({ value: '', disabled: true }, []),
 	});
 
 	/**
@@ -69,13 +73,13 @@ export class EventViewComponent implements OnInit {
 	/**
 	 * In House
 	 */
-	public availableProducts: Product[] = [];
-	public selectedProduct: Product | null = null;
-	public selectedProducts: Product[] = [];
 	public selectedEvent: Event | null = null;
 	public pickedupOrders: EventOrder[] = [];
 	public cookingOrders: EventOrder[] = [];
 	public readyOrders: EventOrder[] = [];
+	public availableProducts: Product[] = [];
+	public selectedProduct: Product | null = null;
+	public selectedItems: Item[] = [];
 
 	constructor(
 		private _activedRoute: ActivatedRoute,
@@ -202,7 +206,7 @@ export class EventViewComponent implements OnInit {
 		this.eventOrderRegistryForm.reset();
 
 		this.selectedProduct = null;
-		this.selectedProducts = [];
+		this.selectedItems = [];
 		this.productCount = this.MIN_PRODUCT_COUNT;
 
 		this.creationAnimationState = 'max';
@@ -211,7 +215,7 @@ export class EventViewComponent implements OnInit {
 	public isEventOrderCreationInvalid() {
 		return (
 			this.eventOrderRegistryForm.invalid ||
-			this.selectedProducts.length === 0 ||
+			this.selectedItems.length === 0 ||
 			this.isLoading ||
 			this.willCreateEventOrder === false
 		);
@@ -224,8 +228,8 @@ export class EventViewComponent implements OnInit {
 
 		const extractedItemsIds: string[] = [];
 
-		this.selectedProducts.forEach((item) => {
-			extractedItemsIds.push(item._id.toString());
+		this.selectedItems.forEach((item) => {
+			extractedItemsIds.push(item.product._id.toString());
 		});
 
 		this._socketService.socket.emit('orders:create', {
@@ -309,12 +313,15 @@ export class EventViewComponent implements OnInit {
 		}
 
 		for (let i = 0; i < this.productCount; i++) {
-			this.selectedProducts.push(this.selectedProduct);
+			this.selectedItems.push({
+				id: v4(),
+				product: this.selectedProduct,
+			});
 		}
 
 		this.productCount = this.MIN_PRODUCT_COUNT;
 
-		this.eventOrderRegistryForm.reset();
+		this.eventOrderRegistryForm.controls.items.reset();
 	}
 
 	public onProductSelection(nextSelectedProducts: Product[]) {
@@ -326,6 +333,12 @@ export class EventViewComponent implements OnInit {
 
 		this.selectedProduct = nextSelectedProducts[0];
 	}
+
+	public onItemDelection(id: string) {
+		this.selectedItems = this.selectedItems.filter((item) => item.id !== id);
+	}
+
+	public onItemEdition(id: string) {}
 
 	private _hasOrder(target: EventOrder, orderList: EventOrder[]): boolean {
 		let hasEvent = false;

@@ -47,8 +47,13 @@
 					</button>
 				</div>
 				<ul>
-					<li *ngFor="let selectedProduct of selectedProducts; index as i" [@pop]>
-						{{ selectedProduct.name }}
+					<li *ngFor="let selectedItem of selectedItems; index as i" [@pop]>
+						<div>
+							<span>{{ selectedItem.product.name }}</span>
+						</div>
+						<button class="--delete" (click)="onItemDelection(selectedItem.id)">
+							<mat-icon>delete</mat-icon>
+						</button>
 					</li>
 				</ul>
 			</div>

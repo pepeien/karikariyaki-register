@@ -241,12 +241,45 @@
 
 				li {
 					display: flex;
+					flex-direction: column;
 					justify-content: center;
 					align-items: center;
-					background-color: $foreground-bright;
 					height: 25vh;
 					border-radius: $app-input-border-raidus;
-					color: $accent-bright;
+					overflow: hidden;
+
+					div {
+						width: 100%;
+						height: 100%;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						align-items: center;
+						background-color: $foreground;
+						color: $accent-bright;
+					}
+
+					button {
+						width: 100%;
+						height: 6vh;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						background-color: $red-dark;
+						color: $accent-bright;
+
+						-webkit-transition: background-color ease-in-out .1s;
+						-moz-transition: 	background-color ease-in-out .1s;
+						-ms-transition: 	background-color ease-in-out .1s;
+						-o-transition: 		background-color ease-in-out .1s;
+						transition: 		background-color ease-in-out .1s;
+
+						&:hover {
+							cursor: pointer;
+							background-color: $red-light;
+						}
+					}
 				}
 			}
 		}
