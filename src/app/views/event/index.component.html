@@ -72,7 +72,8 @@
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_PICKED_UP_TITLE']">
 				<ul class="event__selector__list --past">
 					<li *ngFor="let order of pickedupOrders" [@pop]>
-						<button>
+						<button class="--view">
+							<mat-icon>info</mat-icon>
 							<span>{{ order.client }}</span>
 						</button>
 					</li>
@@ -81,18 +82,33 @@
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_COOKING_TITLE']">
 				<ul class="event__selector__list">
 					<li *ngFor="let order of cookingOrders" [@pop]>
-						<button>
+						<button class="--view">
+							<mat-icon>info</mat-icon>
 							<span>{{ order.client }}</span>
 						</button>
+						<div>
+							<button class="--remove">
+								<mat-icon>delete</mat-icon>
+							</button>
+							<button class="--step" (click)="onOrderStep(order)">
+								<mat-icon>arrow_right_alt</mat-icon>
+							</button>
+						</div>
 					</li>
 				</ul>
 			</mat-tab>
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_READY_TITLE']">
 				<ul class="event__selector__list --future">
 					<li *ngFor="let order of readyOrders" [@pop]>
-						<button>
+						<button class="--view">
+							<mat-icon>info</mat-icon>
 							<span>{{ order.client }}</span>
 						</button>
+						<div>
+							<button class="--step" (click)="onOrderStep(order)">
+								<mat-icon>arrow_right_alt</mat-icon>
+							</button>
+						</div>
 					</li>
 				</ul>
 			</mat-tab>

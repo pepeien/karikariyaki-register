@@ -71,7 +71,7 @@ export class HomeViewComponent implements OnInit {
 				currentDate.setHours(0, 0, 0, 0);
 
 				for (const event of eventList) {
-					if (event.isOpen) {
+					if (event.isOpen && this._hasEvent(event, this.ongoingEvents) === false) {
 						this.ongoingEvents.unshift(event);
 
 						continue;

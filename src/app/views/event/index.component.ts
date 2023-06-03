@@ -7,6 +7,7 @@ import {
 	Event,
 	EventOrder,
 	EventOrderCreatableParams,
+	EventOrderEditableParams,
 	OrderStatus,
 	Product,
 } from 'karikarihelper';
@@ -47,7 +48,7 @@ export class EventViewComponent implements OnInit {
 	/**
 	 * Primitives
 	 */
-	public willCreateEventOrder = true;
+	public willCreateEventOrder = false;
 	public isLoading = false;
 
 	public productCount = 1;
@@ -55,7 +56,7 @@ export class EventViewComponent implements OnInit {
 	/**
 	 * Animations
 	 */
-	public creationAnimationState: 'min' | 'max' = 'max';
+	public creationAnimationState: 'min' | 'max' = 'min';
 
 	/**
 	 * Forms
@@ -262,6 +263,22 @@ export class EventViewComponent implements OnInit {
 		this._updateAvailableProducts();
 
 		this.willCreateEventOrder = event.toState.trim().toLocaleLowerCase() === 'max';
+	}
+
+	public onOrderStep(order: EventOrder) {
+		if (order.status === OrderStatus.PICKED_UP) {
+			return;
+		}
+
+		this._socketService.socket.emit('orders:edit', {
+			id: order._id,
+			values: {
+				status:
+					order.status === OrderStatus.COOKING
+						? OrderStatus.READY
+						: OrderStatus.PICKED_UP,
+			} as EventOrderEditableParams,
+		});
 	}
 
 	public onManualProductCount(target: EventTarget | null) {
