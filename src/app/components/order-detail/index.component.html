@@ -1,0 +1,13 @@
+<div *ngIf="order" class="order-detail" mat-dialog-content>
+	<span>{{ order.client }}</span>
+	<div class="order-detail__qr-code">
+		<img [src]="qrCodeRedirectorBase64"/>
+	</div>
+	<span> {{ order.status }}</span>
+	<span> {{ order.operator.displayName }}</span>
+	<ul>
+		<li *ngFor="let item of order.items">
+			{{ item.name }}
+		</li>
+	</ul>
+</div>

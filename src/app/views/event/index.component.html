@@ -64,7 +64,10 @@
 	</div>
 	<div class="event__selector">
 		<div class="event__title">{{ selectedEvent.name }}</div>
-		<button class="--new-event" (click)="initEventCreation()">
+		<button
+			*ngIf="isEventEditable()"
+			class="--new-event" (click)="initEventCreation()"
+		>
 			<mat-icon>add</mat-icon>
 			<span>{{ languageSource['EVENT_ORDER_NEW_TITLE'] }}</span>
 		</button>
@@ -72,7 +75,7 @@
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_PICKED_UP_TITLE']">
 				<ul class="event__selector__list --past">
 					<li *ngFor="let order of pickedupOrders" [@pop]>
-						<button class="--view">
+						<button class="--view" (click)="onOrderDetailView(order)">
 							<mat-icon>info</mat-icon>
 							<span>{{ order.client }}</span>
 						</button>
@@ -82,11 +85,11 @@
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_COOKING_TITLE']">
 				<ul class="event__selector__list">
 					<li *ngFor="let order of cookingOrders" [@pop]>
-						<button class="--view">
+						<button class="--view" (click)="onOrderDetailView(order)">
 							<mat-icon>info</mat-icon>
 							<span>{{ order.client }}</span>
 						</button>
-						<div>
+						<div *ngIf="isEventEditable()">
 							<button class="--remove">
 								<mat-icon>delete</mat-icon>
 							</button>
@@ -100,11 +103,11 @@
 			<mat-tab [label]="languageSource['EVENT_ORDER_VIEW_READY_TITLE']">
 				<ul class="event__selector__list --future">
 					<li *ngFor="let order of readyOrders" [@pop]>
-						<button class="--view">
+						<button class="--view" (click)="onOrderDetailView(order)">
 							<mat-icon>info</mat-icon>
 							<span>{{ order.client }}</span>
 						</button>
-						<div>
+						<div *ngIf="isEventEditable()">
 							<button class="--step" (click)="onOrderStep(order)">
 								<mat-icon>arrow_right_alt</mat-icon>
 							</button>

@@ -51,6 +51,14 @@ export class EventOrderRegistryApiV1 extends BaseApi {
 		});
 	}
 
+	public getQRCode(orderId: string): Observable<ApiResponseWrapper<string>> {
+		const endpoint = new URL(`${this._endpoint}/qr/${orderId}`);
+
+		return this.client.get<ApiResponseWrapper<string>>(endpoint.href, {
+			withCredentials: true,
+		});
+	}
+
 	public save(params: EventOrderCreatableParams): Observable<ApiResponseWrapper<EventOrder>> {
 		const endpoint = new URL(this._endpoint);
 

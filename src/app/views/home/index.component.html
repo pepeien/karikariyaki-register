@@ -43,6 +43,7 @@
 					>
 						<button (click)="onEventClick(event)">
 							<span>{{ event.name }}</span>
+							<mat-icon>chevron_right</mat-icon>
 						</button>
 					</li>
 				</ul>
@@ -66,7 +67,7 @@
 						*ngFor="let event of upcomingEvents; index as i"
 						[@slideFromRight]="{ value: '', params: { delay: i * 100 } }"
 					>
-						<button (click)="onEventClick(event)">
+						<button>
 							<span>{{ event.name }}</span>
 						</button>
 					</li>

@@ -1,5 +1,6 @@
 import { AnimationEvent } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -27,6 +28,7 @@ import {
 	LoadingService,
 	SocketService,
 } from '@services';
+import { OrderDetailComponent } from '@components';
 
 @Component({
 	selector: 'app-event-view',
@@ -85,6 +87,7 @@ export class EventViewComponent implements OnInit {
 	constructor(
 		private _activedRoute: ActivatedRoute,
 		private _apiService: ApiService,
+		private _dialog: MatDialog,
 		private _eventService: EventsService,
 		private _languageService: LanguageService,
 		private _loadingService: LoadingService,
@@ -103,7 +106,7 @@ export class EventViewComponent implements OnInit {
 			console.log(response);
 		});
 
-		this._socketService.socket.on('orders:error', (response) => {
+		this._socketService.socket.on('order:error', (response) => {
 			console.log(response);
 		});
 
@@ -200,7 +203,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	public initEventCreation() {
-		if (this.isLoading) {
+		if (this.isEventEditable() === false) {
 			return;
 		}
 
@@ -217,13 +220,17 @@ export class EventViewComponent implements OnInit {
 		return (
 			this.eventOrderRegistryForm.invalid ||
 			this.selectedItems.length === 0 ||
-			this.isLoading ||
+			this.isEventEditable() === false ||
 			this.willCreateEventOrder === false
 		);
 	}
 
+	public isEventEditable() {
+		return this.isLoading === false && this.selectedEvent && this.selectedEvent.isOpen;
+	}
+
 	public onEventOrderCreation() {
-		if (this.isEventOrderCreationInvalid() || this.isLoading) {
+		if (this.isEventOrderCreationInvalid()) {
 			return;
 		}
 
@@ -233,7 +240,7 @@ export class EventViewComponent implements OnInit {
 			extractedItemsIds.push(item.product._id.toString());
 		});
 
-		this._socketService.socket.emit('orders:create', {
+		this._socketService.socket.emit('order:create', {
 			itemsId: extractedItemsIds,
 			clientName: this.eventOrderRegistryForm.controls.client.value as string,
 		} as EventOrderCreatableParams);
@@ -241,13 +248,18 @@ export class EventViewComponent implements OnInit {
 		this.onCancelEvent();
 	}
 
-	public onCancelEvent() {
-		if (this.isLoading) {
-			return;
-		}
+	public onOrderDetailView(order: EventOrder) {
+		this._dialog.open(OrderDetailComponent, {
+			data: order,
+			height: '80vh',
+		});
+	}
 
+	public onCancelEvent() {
 		if (this.willCreateEventOrder) {
-			this.creationAnimationState = 'min';
+			if (this.isEventEditable()) {
+				this.creationAnimationState = 'min';
+			}
 
 			return;
 		}
@@ -256,7 +268,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	public onCreationAnimation(event: AnimationEvent) {
-		if (this.isLoading) {
+		if (this.isEventEditable() === false) {
 			return;
 		}
 
@@ -266,11 +278,11 @@ export class EventViewComponent implements OnInit {
 	}
 
 	public onOrderStep(order: EventOrder) {
-		if (order.status === OrderStatus.PICKED_UP) {
+		if (this.isEventEditable() === false || order.status === OrderStatus.PICKED_UP) {
 			return;
 		}
 
-		this._socketService.socket.emit('orders:edit', {
+		this._socketService.socket.emit('order:edit', {
 			id: order._id,
 			values: {
 				status:
@@ -282,7 +294,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	public onManualProductCount(target: EventTarget | null) {
-		if (!target) {
+		if (this.isEventEditable() === false || !target) {
 			return;
 		}
 
@@ -311,6 +323,7 @@ export class EventViewComponent implements OnInit {
 
 	public onProductCountDecrement() {
 		if (
+			this.isEventEditable() === false ||
 			this.productCount < this.MIN_PRODUCT_COUNT ||
 			this.productCount > this.MAX_PRODUCT_COUNT
 		) {
@@ -325,7 +338,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	public onProductConfirmation() {
-		if (!this.selectedProduct) {
+		if (this.isEventEditable() === false || !this.selectedProduct) {
 			return;
 		}
 
@@ -342,7 +355,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	public onProductSelection(nextSelectedProducts: Product[]) {
-		if (!nextSelectedProducts) {
+		if (this.isEventEditable() === false || !nextSelectedProducts) {
 			this.selectedProduct = null;
 
 			return;

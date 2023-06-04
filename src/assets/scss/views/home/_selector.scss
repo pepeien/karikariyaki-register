@@ -9,6 +9,10 @@
 		padding-bottom: 4vh;
 		margin: 0 auto;
 
+		.event__title {
+			margin-top: 2vh;
+		}
+
 		.--new-event {
 			width: 100%;
 			display: flex;
@@ -114,7 +118,6 @@
 			&.--past {
 				li {
 					background-color: $foreground-disabled;
-					pointer-events: none;
 
 					button {
 						color: $foreground;

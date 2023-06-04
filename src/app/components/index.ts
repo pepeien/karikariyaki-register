@@ -5,4 +5,5 @@ export { FloatAvatarComponent, FloatAvatarModule } from './float-avatar';
 export { LoaderComponent, LoaderComponentModule } from './loader';
 export { LogoComponent, LogoModule } from './logo';
 export { NavbarComponent, NavbarModule } from './navbar';
+export { OrderDetailComponent, OrderDetailModule } from './order-detail';
 export { TableComponent, TableModule } from './table';
