@@ -8,17 +8,25 @@ export class AutomaticAnimation {
 
 	public static get fade() {
 		return trigger('fade', [
-			transition(':enter', [
-				style({
-					opacity: '0',
-				}),
-				animate(
-					`${AutomaticAnimation.SLIDE_POP_ANIMATION_DURATION_IS_MS}ms ease-in-out`,
+			transition(
+				':enter',
+				[
 					style({
-						opacity: '1',
+						opacity: '0',
 					}),
-				),
-			]),
+					animate(
+						`${AutomaticAnimation.SLIDE_POP_ANIMATION_DURATION_IS_MS}ms {{delay}}ms ease-in-out`,
+						style({
+							opacity: '1',
+						}),
+					),
+				],
+				{
+					params: {
+						delay: 0,
+					},
+				},
+			),
 			transition(':leave', [
 				style({
 					opacity: '1',
@@ -105,7 +113,7 @@ export class AutomaticAnimation {
 						transform: 'translateX(-100vw)',
 					}),
 					animate(
-						`${AutomaticAnimation.SLIDE_FROM_LEFT_ANIMATION_DURATION_IS_MS}ms {{delay}}ms ease-in-out`,
+						'{{duration}}ms {{delay}}ms ease-in-out',
 						style({
 							transform: 'translateX(0)',
 						}),
@@ -113,6 +121,7 @@ export class AutomaticAnimation {
 				],
 				{
 					params: {
+						duration: AutomaticAnimation.SLIDE_FROM_LEFT_ANIMATION_DURATION_IS_MS,
 						delay: 0,
 					},
 				},

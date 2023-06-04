@@ -14,6 +14,25 @@ app-order-detail {
 	max-height: 100% !important;
 	background-color: $foreground-disabled;
 
+	app-order-status {
+		width: 100%;
+	}
+
+	&__title {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: 'DarumadropOne';
+		font-weight: bold;
+		font-size: 3rem;
+		margin-top: 2vh;
+		padding: 1vh 0;
+		width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		overflow-x: auto;
+	}
+
 	&__qr-code {
 		background-color: $background;
 		border-radius: 15px;
@@ -22,6 +41,32 @@ app-order-detail {
 		img {
 			width: 100%;
 			height: 100%;
+		}
+	}
+
+	&__items {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(10vh, 1fr));
+		gap: 2.5vh;
+		border: solid 1px $foreground-bright;
+		border-radius: $app-input-border-raidus;
+		height: 25vh;
+		width: 85%;
+		padding: 2vh;
+		overflow: hidden;
+		overflow-y: auto;
+
+		li {
+			width: 100%;
+			height: 20vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			background-color: $foreground;
+			color: $accent-bright;
+			border-radius: $app-input-border-raidus;
+			overflow: hidden;
 		}
 	}
 }

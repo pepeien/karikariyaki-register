@@ -5,6 +5,7 @@ import {
 	EventOrderCreatableParams,
 	EventOrderEditableParams,
 	EventOrderQueryableParams,
+	QrCodeRseponse,
 } from 'karikarihelper';
 
 // Types
@@ -51,10 +52,10 @@ export class EventOrderRegistryApiV1 extends BaseApi {
 		});
 	}
 
-	public getQRCode(orderId: string): Observable<ApiResponseWrapper<string>> {
+	public getQRCode(orderId: string): Observable<ApiResponseWrapper<QrCodeRseponse>> {
 		const endpoint = new URL(`${this._endpoint}/qr/${orderId}`);
 
-		return this.client.get<ApiResponseWrapper<string>>(endpoint.href, {
+		return this.client.get<ApiResponseWrapper<QrCodeRseponse>>(endpoint.href, {
 			withCredentials: true,
 		});
 	}

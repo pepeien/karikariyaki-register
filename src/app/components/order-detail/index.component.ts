@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 // Service
 import { ApiService, LanguageService } from '@services';
-import { EventOrder } from 'karikarihelper';
+import { EventOrder, QrCodeRseponse } from 'karikarihelper';
 
 @Component({
 	selector: 'app-order-detail',
@@ -13,7 +13,7 @@ export class OrderDetailComponent implements OnInit {
 	/**
 	 * Primitives
 	 */
-	public qrCodeRedirectorBase64: string | undefined;
+	public qrCodeRedirector: QrCodeRseponse | undefined;
 
 	/**
 	 * Props
@@ -48,7 +48,7 @@ export class OrderDetailComponent implements OnInit {
 					return;
 				}
 
-				this.qrCodeRedirectorBase64 = response.result;
+				this.qrCodeRedirector = response.result;
 			},
 		});
 
