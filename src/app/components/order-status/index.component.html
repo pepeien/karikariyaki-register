@@ -19,7 +19,7 @@
 		class="order-status__content"
 		[attr.data-is-active]="isReady()"
 		[attr.data-is-done]="isPickedUp()"
-		[@fade]="{ value: '', params: { delay: 500 }}"
+		[@pop]="{ value: '', params: { delay: 300 }}"
 	>
 		<div>
 			<mat-icon>room_service</mat-icon>
@@ -30,12 +30,12 @@
 		class="order-status__indicator"
 		[attr.data-is-active]="isPickedUp()"
 	>
-		<div [@slideFromLeft]="{ value: '', params: { duration: 500, delay: 500 }}"></div>
+		<div [@slideFromLeft]="{ value: '', params: { duration: 500, delay: 300 }}"></div>
 	</li>
 	<li
 		class="order-status__content"
 		[attr.data-is-done]="isPickedUp()"
-		[@fade]="{ value: '', params: { delay: 1000 }}"
+		[@pop]="{ value: '', params: { delay: 800 }}"
 	>
 		<div>
 			<mat-icon>takeout_dining</mat-icon>

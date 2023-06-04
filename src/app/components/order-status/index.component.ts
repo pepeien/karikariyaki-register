@@ -10,7 +10,7 @@ import { ApiService, LanguageService } from '@services';
 @Component({
 	selector: 'app-order-status',
 	templateUrl: './index.component.html',
-	animations: [AutomaticAnimation.fade, AutomaticAnimation.slideFromLeft],
+	animations: [AutomaticAnimation.pop, AutomaticAnimation.slideFromLeft],
 })
 export class OrderStatusComponent implements OnInit {
 	@Input()

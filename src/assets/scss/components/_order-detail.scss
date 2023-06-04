@@ -25,8 +25,7 @@ app-order-detail {
 		font-family: 'DarumadropOne';
 		font-weight: bold;
 		font-size: 3rem;
-		margin-top: 2vh;
-		padding: 1vh 0;
+		padding: 1.5vh 0;
 		width: 100%;
 		white-space: nowrap;
 		overflow: hidden;
@@ -38,6 +37,7 @@ app-order-detail {
 		border-radius: 15px;
 		width: 25vh;
 		height: 25vh;
+
 		img {
 			width: 100%;
 			height: 100%;
@@ -52,7 +52,7 @@ app-order-detail {
 		border-radius: $app-input-border-raidus;
 		height: 25vh;
 		width: 85%;
-		padding: 2vh;
+		padding: 2.5vh;
 		overflow: hidden;
 		overflow-y: auto;
 
