@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Event } from 'karikarihelper';
+import { DateTime } from 'luxon';
 
 // Animations
 import { AutomaticAnimation, BasicAnimations } from '@animations';
@@ -66,7 +67,7 @@ export class HomeViewComponent implements OnInit {
 			next: (eventList) => {
 				this.cancelEventCreation();
 
-				const currentDate = new Date();
+				const currentDate = DateTime.now().setZone('America/Sao_Paulo').toJSDate();
 
 				currentDate.setHours(0, 0, 0, 0);
 
@@ -155,9 +156,15 @@ export class HomeViewComponent implements OnInit {
 			return;
 		}
 
+		const eventDate = this.eventRegistryForm.controls.date.value as Date;
+
+		const strippedDate = `${eventDate.getFullYear()}-${('0' + (eventDate.getMonth() + 1)).slice(
+			-2,
+		)}-${('0' + eventDate.getDate()).slice(-2)}`;
+
 		this._socketService.socket.emit('event:create', {
 			name: this.eventRegistryForm.controls.name.value as string,
-			date: this.eventRegistryForm.controls.date.value as Date,
+			date: DateTime.fromISO(strippedDate, { zone: 'America/Sao_Paulo' }).toJSDate(),
 		});
 	}
 
