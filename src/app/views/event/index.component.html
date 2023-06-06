@@ -51,7 +51,7 @@
 						<div>
 							<span>{{ selectedItem.product.name }}</span>
 						</div>
-						<button class="--delete" (click)="onItemDelection(selectedItem.id)">
+						<button class="--delete" (click)="onItemDeletion(selectedItem.id)">
 							<mat-icon>delete</mat-icon>
 						</button>
 					</li>
@@ -90,7 +90,7 @@
 							<span>{{ order.client }}</span>
 						</button>
 						<div *ngIf="isEventEditable()">
-							<button class="--remove">
+							<button class="--remove" (click)="onOrderDeletion(order)">
 								<mat-icon>delete</mat-icon>
 							</button>
 							<button class="--step" (click)="onOrderStep(order)">
@@ -117,7 +117,7 @@
 			</mat-tab>
 		</mat-tab-group>
 	</div>
-	<button class="--back-event" (click)="onCancelEvent()">
+	<button class="--back-event" (click)="onBackStep()">
 		<mat-icon>arrow_back</mat-icon>
 	</button>
 </main>

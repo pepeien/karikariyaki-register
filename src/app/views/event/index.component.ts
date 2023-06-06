@@ -9,13 +9,11 @@ import {
 	EventOrder,
 	EventOrderCreatableParams,
 	EventOrderEditableParams,
+	OrderItem,
 	OrderStatus,
 	Product,
 } from 'karikarihelper';
 import { v4 } from 'uuid';
-
-// Types
-import { Item } from '@interfaces';
 
 // Animations
 import { AutomaticAnimation, BasicAnimations } from '@animations';
@@ -28,7 +26,9 @@ import {
 	LoadingService,
 	SocketService,
 } from '@services';
-import { OrderDetailComponent } from '@components';
+
+// Components
+import { DialogComponent, OrderDetailComponent } from '@components';
 
 @Component({
 	selector: 'app-event-view',
@@ -82,7 +82,7 @@ export class EventViewComponent implements OnInit {
 	public readyOrders: EventOrder[] = [];
 	public availableProducts: Product[] = [];
 	public selectedProduct: Product | null = null;
-	public selectedItems: Item[] = [];
+	public selectedItems: OrderItem[] = [];
 
 	constructor(
 		private _activedRoute: ActivatedRoute,
@@ -207,11 +207,7 @@ export class EventViewComponent implements OnInit {
 			return;
 		}
 
-		this.eventOrderRegistryForm.reset();
-
-		this.selectedProduct = null;
-		this.selectedItems = [];
-		this.productCount = this.MIN_PRODUCT_COUNT;
+		this._resetInput();
 
 		this.creationAnimationState = 'max';
 	}
@@ -245,7 +241,7 @@ export class EventViewComponent implements OnInit {
 			clientName: this.eventOrderRegistryForm.controls.client.value as string,
 		} as EventOrderCreatableParams);
 
-		this.onCancelEvent();
+		this.onBackStep();
 	}
 
 	public onOrderDetailView(order: EventOrder) {
@@ -255,9 +251,11 @@ export class EventViewComponent implements OnInit {
 		});
 	}
 
-	public onCancelEvent() {
+	public onBackStep() {
 		if (this.willCreateEventOrder) {
 			if (this.isEventEditable()) {
+				this._resetInput();
+
 				this.creationAnimationState = 'min';
 			}
 
@@ -275,6 +273,28 @@ export class EventViewComponent implements OnInit {
 		this._updateAvailableProducts();
 
 		this.willCreateEventOrder = event.toState.trim().toLocaleLowerCase() === 'max';
+	}
+
+	public onOrderDeletion(order: EventOrder) {
+		if (this.isEventEditable() === false || order.status !== OrderStatus.COOKING) {
+			return;
+		}
+
+		const dialogRef = this._dialog.open(DialogComponent, {
+			data: {
+				message: this.languageSource['EVENT_ORDER_REGISTRY_DELETE_MESSAGE'],
+			},
+		});
+
+		dialogRef.afterClosed().subscribe({
+			next: (willDelete) => {
+				if (willDelete === false) {
+					return;
+				}
+
+				this._socketService.socket.emit('order:delete', order._id);
+			},
+		});
 	}
 
 	public onOrderStep(order: EventOrder) {
@@ -364,7 +384,7 @@ export class EventViewComponent implements OnInit {
 		this.selectedProduct = nextSelectedProducts[0];
 	}
 
-	public onItemDelection(id: string) {
+	public onItemDeletion(id: string) {
 		this.selectedItems = this.selectedItems.filter((item) => item.id !== id);
 	}
 
@@ -382,6 +402,14 @@ export class EventViewComponent implements OnInit {
 		}
 
 		return hasEvent;
+	}
+
+	private _resetInput() {
+		this.eventOrderRegistryForm.reset();
+
+		this.selectedProduct = null;
+		this.selectedItems = [];
+		this.productCount = this.MIN_PRODUCT_COUNT;
 	}
 
 	private _removeOrder(target: EventOrder, orderList: EventOrder[]) {

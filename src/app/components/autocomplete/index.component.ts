@@ -70,7 +70,7 @@ export class AutocompleteComponent<T> implements OnInit, OnChanges {
 	}
 
 	public onCheckboxClick(event: Event, value: T) {
-		if (!this.optionGetter || !this.controlName) {
+		if (!this.controlName) {
 			return;
 		}
 
@@ -95,7 +95,7 @@ export class AutocompleteComponent<T> implements OnInit, OnChanges {
 			this._selectedItems = wasAlreadySelected ? [] : [value];
 
 			this.formGroup.controls[this.controlName].setValue(
-				this._selectedItems.length === 0 ? '' : this.optionGetter(value),
+				this._selectedItems.length === 0 ? '' : this.execOptionGetter(value),
 			);
 		}
 
