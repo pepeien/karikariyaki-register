@@ -33,14 +33,27 @@ app-order-detail {
 	}
 
 	&__qr-code {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		background-color: $background;
 		border-radius: 15px;
 		width: 25vh;
-		height: 25vh;
+		height: 31vh;
 
 		img {
 			width: 100%;
 			height: 100%;
+		}
+
+		app-logo {
+			display: flex;
+			width: 12vh;
+			height: 10vh;
+
+			svg {	
+				fill: $foreground;
+			}
 		}
 	}
 

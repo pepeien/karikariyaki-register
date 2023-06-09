@@ -9,10 +9,11 @@ import { MaterialBundle } from '@imports';
 
 // Modules
 import { OrderStatusModule } from '../order-status';
+import { LogoModule } from '../logo';
 
 @NgModule({
 	declarations: [OrderDetailComponent],
-	imports: [CommonModule, MaterialBundle, OrderStatusModule],
+	imports: [CommonModule, LogoModule, MaterialBundle, OrderStatusModule],
 	exports: [OrderDetailComponent],
 })
 export class OrderDetailModule {}
