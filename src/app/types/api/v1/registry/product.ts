@@ -29,14 +29,6 @@ export class ProductRegistryApiV1 extends BaseApi {
 		});
 	}
 
-	public searchSelf(): Observable<ApiResponseWrapper<Product[]>> {
-		const endpoint = new URL(this._endpoint + '/self');
-
-		return this.client.get<ApiResponseWrapper<Product[]>>(endpoint.href, {
-			withCredentials: true,
-		});
-	}
-
 	public save(params: ProductCreatableParams): Observable<ApiResponseWrapper<Product>> {
 		const endpoint = new URL(this._endpoint);
 

@@ -423,7 +423,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	private _updateAvailableProducts() {
-		this._apiService.V1.productRegistry.searchSelf().subscribe({
+		this._apiService.V1.productRegistry.search().subscribe({
 			next: (response) => {
 				if (response.wasSuccessful === false || !response.result) {
 					return;
