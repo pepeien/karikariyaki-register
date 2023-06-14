@@ -1,6 +1,7 @@
 <main class="events" [@slideFromRight]>
 	<app-logo></app-logo>
 	<div
+		*ngIf="canCreateEvent"
 		class="events__registry"
 		[@horizontalShrink]="creationAnimationState"
 		(@horizontalShrink.done)="onCreationAnimation($event)"
@@ -30,7 +31,7 @@
 	</div>
 	<div class="events__selector">
 		<div class="events__title">{{ selectedLanguage['EVENT_VIEW_TITLE'] }}</div>
-		<button class="--new-event" (click)="initEventCreation()">
+		<button *ngIf="canCreateEvent" class="--new-event" (click)="initEventCreation()">
 			<mat-icon>add</mat-icon>
 			<span>{{ selectedLanguage['EVENT_NEW_TITLE'] }}</span>
 		</button>

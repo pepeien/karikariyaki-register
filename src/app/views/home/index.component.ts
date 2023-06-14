@@ -2,14 +2,20 @@ import { AnimationEvent } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Event } from 'karikarihelper';
+import { Event, OperatorRole } from 'karikarihelper';
 import { DateTime } from 'luxon';
 
 // Animations
 import { AutomaticAnimation, BasicAnimations } from '@animations';
 
 // Services
-import { EventsService, LanguageService, LoadingService, SocketService } from '@services';
+import {
+	EventsService,
+	LanguageService,
+	LoadingService,
+	OperatorService,
+	SocketService,
+} from '@services';
 
 @Component({
 	selector: 'app-home-view',
@@ -24,8 +30,9 @@ export class HomeViewComponent implements OnInit {
 	/**
 	 * Primitives
 	 */
-	public willCreateEvent = false;
+	public canCreateEvent = false;
 	public isLoading = false;
+	public willCreateEvent = false;
 
 	/**
 	 * Animations
@@ -56,6 +63,7 @@ export class HomeViewComponent implements OnInit {
 		private _eventService: EventsService,
 		private _languageService: LanguageService,
 		private _loadingService: LoadingService,
+		private _operatorService: OperatorService,
 		private _router: Router,
 		private _socketService: SocketService,
 	) {}
@@ -115,10 +123,22 @@ export class HomeViewComponent implements OnInit {
 				this.isLoading = nextLoading;
 			},
 		});
+
+		this._operatorService.operator.subscribe({
+			next: (operator) => {
+				if (!operator) {
+					this.canCreateEvent = false;
+
+					return;
+				}
+
+				this.canCreateEvent = operator.role === OperatorRole.ADMIN;
+			},
+		});
 	}
 
 	public initEventCreation() {
-		if (this.isLoading) {
+		if (this.isLoading || this.canCreateEvent === false) {
 			return;
 		}
 
@@ -130,7 +150,12 @@ export class HomeViewComponent implements OnInit {
 	}
 
 	public isEventCreationInvalid() {
-		return this.eventRegistryForm.invalid || this.isLoading || this.willCreateEvent === false;
+		return (
+			this.eventRegistryForm.invalid ||
+			this.isLoading ||
+			this.canCreateEvent === false ||
+			this.willCreateEvent === false
+		);
 	}
 
 	public cancelEventCreation() {
@@ -152,7 +177,7 @@ export class HomeViewComponent implements OnInit {
 	}
 
 	public onEventCreation() {
-		if (this.isEventCreationInvalid() || this.isLoading) {
+		if (this.isEventCreationInvalid()) {
 			return;
 		}
 
@@ -188,14 +213,6 @@ export class HomeViewComponent implements OnInit {
 
 	private _isEventFinished(eventDate: Date, currentDate: Date) {
 		return eventDate < currentDate;
-	}
-
-	private _isEventOnGoing(eventDate: Date, currentDate: Date) {
-		return (
-			eventDate.getDate() === currentDate.getDate() &&
-			eventDate.getMonth() === currentDate.getMonth() &&
-			eventDate.getFullYear() === currentDate.getFullYear()
-		);
 	}
 
 	private _isEventUpcoming(eventDate: Date, currentDate: Date) {
