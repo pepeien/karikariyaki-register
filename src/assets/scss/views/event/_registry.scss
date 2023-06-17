@@ -5,14 +5,14 @@
 		align-items: center;
 		position: absolute;
 		width: 100%;
+		min-height: 100vh;
 		height: 100%;
 		background-color: $background;
 		z-index: $max-z-index - 3;
-		overflow: hidden;
 		align-self: flex-start;
 
 		.event__title {
-			margin-top: 4vh;
+			min-height: 10vh;
 		}
 
 		&__product {
@@ -58,6 +58,32 @@
 						border-color: transparent;
 						background-color: $foreground-brighter;
 						color: $accent-bright;
+					}
+				}
+			}
+
+			.--data {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				height: 100%;
+
+				app-ingredient-selector {
+					width: 100%;
+					display: flex;
+					flex-direction: column;
+					gap: 2vh 0;
+
+					.ingredient__selector {
+						width: 100%;
+					}
+
+					.ingredient__selector-listing {
+						display: flex;
+						flex-direction: row;
+						gap: 0 2vh;
+						width: 90%;
+						height: 15vh;
 					}
 				}
 			}
@@ -181,10 +207,9 @@
 			justify-content: center;
 			align-items: center;
 			border-radius: 12px;
-			padding: 0 12vh;
-			height: 7vh;
+			padding: 2vh 12vh;
 			width: 80%;
-			margin: 2vh auto 0 auto;
+			margin: 2vh auto;
 			background-color: transparent;
 			border: solid 2px transparent;
 			border-radius: $app-input-border-raidus;
@@ -193,7 +218,6 @@
 			font-family: 'DarumadropOne';
 			font-size: 1.2rem;
 			color: $foreground-bright;
-
 			transition: color ease-in-out 300ms, border-color ease-in-out 300ms, background-color ease-in-out 300ms;
 	
 			&:disabled {
@@ -293,6 +317,14 @@
 				flex-direction: row;
 				gap: 0 2vh;
 	
+				.--data {					
+					app-ingredient-selector {
+						flex-direction: row;
+						justify-content: center;
+						gap: 0 2vh;
+					}
+				}
+
 				> div {
 					gap: 0 1vh;
 					margin-bottom: 0;

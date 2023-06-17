@@ -149,6 +149,7 @@ export class BasicAnimations {
 				'min',
 				style({
 					width: 0,
+					overflow: 'hidden',
 				}),
 			),
 			state('max', style({})),

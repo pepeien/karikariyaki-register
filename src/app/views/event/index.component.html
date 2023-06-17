@@ -17,16 +17,24 @@
 			</mat-form-field>
 			<div class="event__registry__items">
 				<div class="event__registry__product">
-					<app-auto-complete
-						[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
-						[data]="availableProducts"
-						[formGroup]="eventOrderRegistryForm"
-						[controlName]="'items'"
-						[optionGetter]="displayProductAutocomplete"
-						(onSelection)="onProductSelection($event)"
-					>
-					</app-auto-complete>
-					<div>
+					<div class="--data">
+						<app-auto-complete
+							[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
+							[data]="availableProducts"
+							[formGroup]="eventOrderRegistryForm"
+							[controlName]="'items'"
+							[optionGetter]="displayProductAutocomplete"
+							(onSelection)="onProductSelection($event)"
+						>
+						</app-auto-complete>
+						<app-ingredient-selector
+							[ingredients]="selectedProduct?.ingredients ?? []"
+							(onAdditionalSelection)="onAdditionalSelection($event)"
+							(onOptionalSelection)="onOptionalSelection($event)"
+						>
+						</app-ingredient-selector>
+					</div>
+					<div clas="--counter">
 						<button (click)="onProductCountDecrement()" [disabled]="productCount <= MIN_PRODUCT_COUNT">
 							<mat-icon>remove</mat-icon>
 						</button>
@@ -49,9 +57,9 @@
 				<ul>
 					<li *ngFor="let selectedItem of selectedItems; index as i" [@pop]>
 						<div>
-							<span>{{ selectedItem.product.name }}</span>
+							<span>{{ selectedItem.data.product.name }}</span>
 						</div>
-						<button class="--delete" (click)="onItemDeletion(selectedItem.id)">
+						<button class="--delete">
 							<mat-icon>delete</mat-icon>
 						</button>
 					</li>

@@ -9,7 +9,9 @@ import {
 	EventOrder,
 	EventOrderCreatableParams,
 	EventOrderEditableParams,
+	Ingredient,
 	OrderItem,
+	OrderItemParam,
 	OrderStatus,
 	Product,
 } from 'karikarihelper';
@@ -29,6 +31,11 @@ import {
 
 // Components
 import { DialogComponent, OrderDetailComponent } from '@components';
+
+interface IdedOrderItem {
+	id: string;
+	data: OrderItem;
+}
 
 @Component({
 	selector: 'app-event-view',
@@ -82,7 +89,9 @@ export class EventViewComponent implements OnInit {
 	public readyOrders: EventOrder[] = [];
 	public availableProducts: Product[] = [];
 	public selectedProduct: Product | null = null;
-	public selectedItems: OrderItem[] = [];
+	public selectedOptionalIngredients: Ingredient[] = [];
+	public selectedAdditionalIngredients: Ingredient[] = [];
+	public selectedItems: IdedOrderItem[] = [];
 
 	constructor(
 		private _activedRoute: ActivatedRoute,
@@ -225,19 +234,22 @@ export class EventViewComponent implements OnInit {
 		return this.isLoading === false && this.selectedEvent && this.selectedEvent.isOpen;
 	}
 
+	public onOptionalSelection(ingredients: Ingredient[]) {
+		this.selectedOptionalIngredients = ingredients;
+	}
+
+	public onAdditionalSelection(ingredients: Ingredient[]) {
+		this.selectedAdditionalIngredients = ingredients;
+	}
+
 	public onEventOrderCreation() {
 		if (this.isEventOrderCreationInvalid()) {
 			return;
 		}
 
-		const extractedItemsIds: string[] = [];
-
-		this.selectedItems.forEach((item) => {
-			extractedItemsIds.push(item.product._id.toString());
-		});
-
 		this._socketService.socket.emit('order:create', {
-			itemsId: extractedItemsIds,
+			items: this._extractItems(this.selectedItems),
+			eventId: this.selectedEvent?._id,
 			clientName: this.eventOrderRegistryForm.controls.client.value as string,
 		} as EventOrderCreatableParams);
 
@@ -365,7 +377,13 @@ export class EventViewComponent implements OnInit {
 		for (let i = 0; i < this.productCount; i++) {
 			this.selectedItems.push({
 				id: v4(),
-				product: this.selectedProduct,
+				data: {
+					product: this.selectedProduct,
+					modifications: [
+						...this.selectedOptionalIngredients,
+						...this.selectedAdditionalIngredients,
+					],
+				},
 			});
 		}
 
@@ -388,7 +406,18 @@ export class EventViewComponent implements OnInit {
 		this.selectedItems = this.selectedItems.filter((item) => item.id !== id);
 	}
 
-	public onItemEdition(id: string) {}
+	private _extractItems(items: IdedOrderItem[]): OrderItemParam[] {
+		const result: OrderItemParam[] = [];
+
+		items.forEach((item) => {
+			result.push({
+				productId: item.data.product._id,
+				modifications: item.data.modifications,
+			});
+		});
+
+		return result;
+	}
 
 	private _hasOrder(target: EventOrder, orderList: EventOrder[]): boolean {
 		let hasEvent = false;

@@ -8,7 +8,12 @@ import { FormsBundle, MaterialBundle } from '@imports';
 import { EventViewComponent } from './index.component';
 
 // Modules
-import { AutocompleteModule, AvatarModule, LogoModule } from '@components';
+import {
+	AutocompleteModule,
+	AvatarModule,
+	IngredientSelectorModule,
+	LogoModule,
+} from '@components';
 
 @NgModule({
 	declarations: [EventViewComponent],
@@ -17,6 +22,7 @@ import { AutocompleteModule, AvatarModule, LogoModule } from '@components';
 		AvatarModule,
 		CommonModule,
 		FormsBundle,
+		IngredientSelectorModule,
 		LogoModule,
 		MaterialBundle,
 	],
