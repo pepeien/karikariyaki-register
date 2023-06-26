@@ -29,7 +29,7 @@ export class OrderStatusComponent implements OnInit {
 	constructor(private _apiService: ApiService, private _languageService: LanguageService) {}
 
 	ngOnInit(): void {
-		this._apiService.V1.eventOrderRegistry.status().subscribe({
+		this._apiService.V1.registry.eventOrder.status().subscribe({
 			next: (response) => {
 				if (response.wasSuccessful === false || !response.result) {
 					return;

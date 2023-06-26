@@ -49,7 +49,7 @@ export class OrderDetailComponent implements OnInit {
 			return;
 		}
 
-		this._apiService.V1.eventOrderRegistry.getQRCode(this.order._id).subscribe({
+		this._apiService.V1.registry.eventOrder.getQRCode(this.order._id).subscribe({
 			next: (response) => {
 				if (response.wasSuccessful === false || !response.result) {
 					return;
