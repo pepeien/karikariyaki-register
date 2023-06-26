@@ -22,6 +22,7 @@ import { AutomaticAnimation, BasicAnimations } from '@animations';
 
 // Services
 import {
+	AlertService,
 	ApiService,
 	EventsService,
 	LanguageService,
@@ -94,6 +95,7 @@ export class EventViewComponent implements OnInit {
 	public selectedItems: IdedOrderItem[] = [];
 
 	constructor(
+		private _alertService: AlertService,
 		private _activedRoute: ActivatedRoute,
 		private _apiService: ApiService,
 		private _dialog: MatDialog,
@@ -112,11 +114,19 @@ export class EventViewComponent implements OnInit {
 		}
 
 		this._socketService.socket.on('event:error', (response) => {
-			console.log(response);
+			const serializedResponse = response.description as string[];
+
+			serializedResponse.forEach((errorDescription) => {
+				this._alertService.pushWarning(errorDescription);
+			});
 		});
 
 		this._socketService.socket.on('order:error', (response) => {
-			console.log(response);
+			const serializedResponse = response.description as string[];
+
+			serializedResponse.forEach((errorDescription) => {
+				this._alertService.pushWarning(errorDescription);
+			});
 		});
 
 		this._socketService.socket.on('orders:refresh', (response) => {
@@ -452,7 +462,7 @@ export class EventViewComponent implements OnInit {
 	}
 
 	private _updateAvailableProducts() {
-		this._apiService.V1.productRegistry.search().subscribe({
+		this._apiService.V1.registry.product.search().subscribe({
 			next: (response) => {
 				if (response.wasSuccessful === false || !response.result) {
 					return;
