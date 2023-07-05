@@ -10,65 +10,78 @@
 		(@horizontalShrink.done)="onCreationAnimation($event)"
 	>
 		<div class="event__title">{{ languageSource['EVENT_ORDER_NEW_TITLE'] }}</div>
-		<form [formGroup]="eventOrderRegistryForm">
-			<mat-form-field appearance="outline">
-				<mat-label>{{ languageSource['REGISTRY_EVENT_ORDER_CLIENT_INPUT'] }}</mat-label>
-				<input matInput formControlName="client" required>
-			</mat-form-field>
-			<div class="event__registry__items">
-				<div class="event__registry__product">
-					<div class="--data">
-						<app-auto-complete
-							[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
-							[data]="availableProducts"
-							[formGroup]="eventOrderRegistryForm"
-							[controlName]="'items'"
-							[optionGetter]="displayProductAutocomplete"
-							(onSelection)="onProductSelection($event)"
-						>
-						</app-auto-complete>
-						<app-ingredient-selector
-							[ingredients]="selectedProduct?.ingredients ?? []"
-							(onAdditionalSelection)="onAdditionalSelection($event)"
-							(onOptionalSelection)="onOptionalSelection($event)"
-						>
-						</app-ingredient-selector>
-					</div>
-					<div clas="--counter">
-						<button (click)="onProductCountDecrement()" [disabled]="productCount <= MIN_PRODUCT_COUNT">
-							<mat-icon>remove</mat-icon>
-						</button>
-						<input
-							matInput
-							[value]="productCount"
-							[min]="MIN_PRODUCT_COUNT"
-							[max]="MAX_PRODUCT_COUNT"
-							type="number"
-							(keyup)="onManualProductCount($event.target)"
-						>
-						<button (click)="onProductCountIncrement()" [disabled]="productCount >= MAX_PRODUCT_COUNT">
-							<mat-icon>add</mat-icon>
-						</button>
-					</div>
-					<button (click)="onProductConfirmation()" [disabled]="!selectedProduct">
-						<mat-icon>check</mat-icon>
-					</button>
-				</div>
-				<ul>
-					<li *ngFor="let selectedItem of selectedItems; index as i" [@pop]>
-						<div>
-							<span>{{ selectedItem.data.product.name }}</span>
+		<mat-stepper #stepper linear labelPosition="bottom">
+			<mat-step
+				[stepControl]="eventOrderRegistryForm.controls.client"
+				[label]="languageSource['EVENT_ORDER_REGISTRY_CLIENT_STEP_TITLE']"
+			>
+				<form [formGroup]="eventOrderRegistryForm">
+					<mat-form-field appearance="outline">
+						<mat-label>{{ languageSource['REGISTRY_EVENT_ORDER_CLIENT_INPUT'] }}</mat-label>
+						<input matInput formControlName="client" required>
+					</mat-form-field>
+				</form>
+				<button matStepperNext class="--button">{{ languageSource['REGISTRY_STEP_NEXT'] }}</button>
+			</mat-step>
+			<mat-step [label]="languageSource['EVENT_ORDER_REGISTRY_ITEMS_STEP_TITLE']">
+				<div class="event__registry__items">
+					<div class="event__registry__product">
+						<div class="--data">
+							<app-auto-complete
+								[label]="languageSource['REGISTRY_EVENT_ORDER_ITEMS_INPUT']"
+								[data]="availableProducts"
+								[formGroup]="eventOrderRegistryForm"
+								[controlName]="'items'"
+								[optionGetter]="displayProductAutocomplete"
+								(onSelection)="onProductSelection($event)"
+							>
+							</app-auto-complete>
+							<app-ingredient-selector
+								[ingredients]="selectedProduct?.ingredients ?? []"
+								(onAdditionalSelection)="onAdditionalSelection($event)"
+								(onOptionalSelection)="onOptionalSelection($event)"
+							>
+							</app-ingredient-selector>
 						</div>
-						<button class="--delete">
-							<mat-icon>delete</mat-icon>
+						<div clas="--counter">
+							<button (click)="onProductCountDecrement()" [disabled]="productCount <= MIN_PRODUCT_COUNT">
+								<mat-icon>remove</mat-icon>
+							</button>
+							<input
+								matInput
+								[value]="productCount"
+								[min]="MIN_PRODUCT_COUNT"
+								[max]="MAX_PRODUCT_COUNT"
+								type="number"
+								(keyup)="onManualProductCount($event.target)"
+							>
+							<button (click)="onProductCountIncrement()" [disabled]="productCount >= MAX_PRODUCT_COUNT">
+								<mat-icon>add</mat-icon>
+							</button>
+						</div>
+						<button class="--button" (click)="onProductConfirmation()" [disabled]="!selectedProduct">
+							<mat-icon>check</mat-icon>
 						</button>
-					</li>
-				</ul>
-			</div>
-		</form>
-		<button (click)="onEventOrderCreation()" [disabled]="isEventOrderCreationInvalid()">
-			{{ languageSource['REGISTRY_EDITOR_CREATION_ACTION'] }}
-		</button>
+					</div>
+					<ul>
+						<li *ngFor="let selectedItem of selectedItems; index as i" [@pop]>
+							<div>
+								<span>{{ selectedItem.data.product.name }}</span>
+							</div>
+							<button class="--delete">
+								<mat-icon>delete</mat-icon>
+							</button>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<button class="--button" (click)="onEventOrderCreation()" [disabled]="isEventOrderCreationInvalid()">
+						{{ languageSource['REGISTRY_EDITOR_CREATION_ACTION'] }}
+					</button>
+					<button class="--button" matStepperPrevious>{{ languageSource['REGISTRY_STEP_BACK'] }}</button>
+				</div>
+			</mat-step>
+		</mat-stepper>
 	</div>
 	<div class="event__selector">
 		<div class="event__title">{{ selectedEvent.name }}</div>

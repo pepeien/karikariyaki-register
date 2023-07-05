@@ -279,8 +279,7 @@
 						flex-direction: column;
 						justify-content: center;
 						align-items: center;
-						background-color: $foreground;
-						color: $accent-bright;
+						color: $foreground !important;
 					}
 
 					button {
@@ -307,6 +306,80 @@
 				}
 			}
 		}
+
+		app-auto-complete {
+			width: 100%;
+		}
+
+		& mat-stepper {
+			background-color: transparent;
+			height: 90%;
+
+			& .mat-horizontal-stepper-wrapper{
+				height: 100%;
+			}
+			
+			.mat-horizontal-content-container  {
+				overflow-y: auto;
+				padding-bottom: 8vh;
+
+			}
+			& .mat-horizontal-stepper-content {
+				mat-form-field {
+					margin-top: 2vh;
+					width: 100%;
+				}
+			}
+		}
+	}
+}
+
+.--app-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0 2vh;
+}
+
+.--button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 12px;
+	padding: 2vh 12vh;
+	width: 80%;
+	margin: 2vh auto;
+	background-color: transparent;
+	border: solid 2px transparent;
+	border-radius: $app-input-border-raidus;
+	border-color: $foreground-bright;
+	outline: transparent;
+	font-family: 'DarumadropOne';
+	font-size: 1.2rem;
+	color: $foreground-bright;
+	transition: color ease-in-out 300ms, border-color ease-in-out 300ms, background-color ease-in-out 300ms;
+
+	&:disabled {
+		color: $foreground-bright;
+		border-color: $foreground-disabled;
+		background-color: $foreground-disabled;
+		pointer-events: none;
+
+		&:hover {
+			cursor: default;
+		}
+	}
+
+	&:not([disabled]) {
+		&:hover {
+			cursor: pointer;
+		}
+
+		&:hover, &:focus {
+			border-color: transparent;
+			background-color: $foreground-brighter;
+			color: $accent-bright;
+		}
 	}
 }
 
@@ -314,9 +387,6 @@
 	.event {
 		&__registry {
 			&__product {
-				flex-direction: row;
-				gap: 0 2vh;
-	
 				.--data {					
 					app-ingredient-selector {
 						flex-direction: row;
@@ -326,11 +396,8 @@
 				}
 
 				> div {
-					gap: 0 1vh;
-					margin-bottom: 0;
-					
 					input {
-						width: 10vh;
+						width: 100%;
 						height: 4vh;
 					}
 
@@ -341,5 +408,14 @@
 			}
 		}
 
+		& mat-stepper {
+			.mat-horizontal-content-container  {
+				padding-bottom: 2vh;
+			}
+
+			.event__registry__items {
+				width: 60vw;
+			}
+		}
 	}
 }
