@@ -75,10 +75,10 @@
 			gap: 1vh;
 			height: 10vh !important;
 			padding-left: 1vh;
-			background-color: rgba(173, 167, 167, 0.1);
 			border-radius: 14px;
 			overflow: hidden;
-			border: 2px solid transparent;
+			border: 2px solid $foreground;
+			background-color: transparent;
 
 			-webkit-transition: background-color ease-in-out .1s, border-color ease-in-out .1s;
 			-moz-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s;
@@ -87,9 +87,10 @@
 			transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s;
 
 			&[data-is-selected="true"] {
-				background-color: $foreground-bright;
+				background-color: $foreground;
 
 				.ingredient__selector__item-data {
+
 					span {
 						color: $accent-bright;
 					}
@@ -119,9 +120,9 @@
 				gap: 1vh 0;
 
 				span {
-					color: rgba(173, 167, 167, 0.7);
 					font-family: 'Nunito';
-					font-size: 0.8rem;
+					font-weight: bold;
+					font-size: 1rem;
 
 					-webkit-transition: color ease-in-out .1s;
 					-moz-transition: 	color ease-in-out .1s;
