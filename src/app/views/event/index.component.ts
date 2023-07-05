@@ -1,5 +1,5 @@
 import { AnimationEvent } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,6 +32,7 @@ import {
 
 // Components
 import { DialogComponent, OrderDetailComponent } from '@components';
+import { MatStepper } from '@angular/material/stepper';
 
 interface IdedOrderItem {
 	id: string;
@@ -64,6 +65,12 @@ export class EventViewComponent implements OnInit {
 	public productCount = 1;
 
 	/**
+	 * Angular
+	 */
+	@ViewChild('stepper')
+	public stepperRef!: MatStepper;
+
+	/**
 	 * Animations
 	 */
 	public creationAnimationState: 'min' | 'max' = 'min';
@@ -72,6 +79,10 @@ export class EventViewComponent implements OnInit {
 	 * Forms
 	 */
 	public eventOrderRegistryForm = new FormGroup({
+		client: new FormControl('', [Validators.required]),
+		items: new FormControl({ value: '', disabled: true }, []),
+	});
+	public eventOrderRegistryFormDummy = new FormGroup({
 		client: new FormControl('', [Validators.required]),
 		items: new FormControl({ value: '', disabled: true }, []),
 	});
@@ -276,6 +287,8 @@ export class EventViewComponent implements OnInit {
 	public onBackStep() {
 		if (this.willCreateEventOrder) {
 			if (this.isEventEditable()) {
+				this.stepperRef.reset();
+
 				this._resetInput();
 
 				this.creationAnimationState = 'min';

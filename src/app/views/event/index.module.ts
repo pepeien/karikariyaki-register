@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatStepperModule } from '@angular/material/stepper';
 
 // Bundles
 import { FormsBundle, MaterialBundle } from '@imports';
@@ -25,6 +26,7 @@ import {
 		IngredientSelectorModule,
 		LogoModule,
 		MaterialBundle,
+		MatStepperModule,
 	],
 	exports: [EventViewComponent],
 })
