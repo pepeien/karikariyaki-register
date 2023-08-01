@@ -5,21 +5,21 @@ import { ApiResponseWrapper, QrCodeRseponse } from 'karikarihelper';
 import { BaseApi } from '@types';
 
 export class ApiV1EventOrderRegistry extends BaseApi {
-	private _endpoint = `${this.root}/v1/admin/registry/event/order`;
+    private _endpoint = `${this.root}/v1/admin/registry/event/order`;
 
-	public status(): Observable<ApiResponseWrapper<string[]>> {
-		const endpoint = new URL(this._endpoint + '/status');
+    public status(): Observable<ApiResponseWrapper<string[]>> {
+        const endpoint = new URL(this._endpoint + '/status');
 
-		return this.client.get<ApiResponseWrapper<string[]>>(endpoint.href, {
-			withCredentials: true,
-		});
-	}
+        return this.client.get<ApiResponseWrapper<string[]>>(endpoint.href, {
+            withCredentials: true,
+        });
+    }
 
-	public getQRCode(orderId: string): Observable<ApiResponseWrapper<QrCodeRseponse>> {
-		const endpoint = new URL(`${this._endpoint}/qr/${orderId}`);
+    public getQRCode(orderId: string): Observable<ApiResponseWrapper<QrCodeRseponse>> {
+        const endpoint = new URL(`${this._endpoint}/qr/${orderId}`);
 
-		return this.client.get<ApiResponseWrapper<QrCodeRseponse>>(endpoint.href, {
-			withCredentials: true,
-		});
-	}
+        return this.client.get<ApiResponseWrapper<QrCodeRseponse>>(endpoint.href, {
+            withCredentials: true,
+        });
+    }
 }

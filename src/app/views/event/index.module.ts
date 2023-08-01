@@ -10,24 +10,24 @@ import { EventViewComponent } from './index.component';
 
 // Modules
 import {
-	AutocompleteModule,
-	AvatarModule,
-	IngredientSelectorModule,
-	LogoModule,
+    AutocompleteModule,
+    AvatarModule,
+    IngredientSelectorModule,
+    LogoModule,
 } from '@components';
 
 @NgModule({
-	declarations: [EventViewComponent],
-	imports: [
-		AutocompleteModule,
-		AvatarModule,
-		CommonModule,
-		FormsBundle,
-		IngredientSelectorModule,
-		LogoModule,
-		MaterialBundle,
-		MatStepperModule,
-	],
-	exports: [EventViewComponent],
+    declarations: [EventViewComponent],
+    imports: [
+        AutocompleteModule,
+        AvatarModule,
+        CommonModule,
+        FormsBundle,
+        IngredientSelectorModule,
+        LogoModule,
+        MaterialBundle,
+        MatStepperModule,
+    ],
+    exports: [EventViewComponent],
 })
 export class EventViewModule {}

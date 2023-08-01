@@ -6,78 +6,78 @@ import { MatTableDataSource } from '@angular/material/table';
 import { LanguageService } from '@services';
 
 @Component({
-	selector: 'app-table',
-	templateUrl: './index.component.html',
+    selector: 'app-table',
+    templateUrl: './index.component.html',
 })
 export class TableComponent<T> implements OnChanges {
-	@Input()
-	public data?: T[];
-	@Input()
-	public onEdit?: (item: T) => void;
-	@Input()
-	public onDelete?: (item: T) => void;
+    @Input()
+    public data?: T[];
+    @Input()
+    public onEdit?: (item: T) => void;
+    @Input()
+    public onDelete?: (item: T) => void;
 
-	/**
-	 * Consts
-	 */
-	public readonly SETTINGS_HEADER = 'inhouse-settings';
+    /**
+     * Consts
+     */
+    public readonly SETTINGS_HEADER = 'inhouse-settings';
 
-	/**
-	 * Table
-	 */
-	@ViewChild('tableSortRef')
-	public tableSortRef = new MatSort();
+    /**
+     * Table
+     */
+    @ViewChild('tableSortRef')
+    public tableSortRef = new MatSort();
 
-	public headerList: string[] = [];
-	public dataList = new MatTableDataSource<T>([]);
+    public headerList: string[] = [];
+    public dataList = new MatTableDataSource<T>([]);
 
-	/**
-	 * In House
-	 */
-	public languageSource = LanguageService.DEFAULT_LANGUAGE;
+    /**
+     * In House
+     */
+    public languageSource = LanguageService.DEFAULT_LANGUAGE;
 
-	constructor(private _languageService: LanguageService) {}
+    constructor(private _languageService: LanguageService) {}
 
-	ngOnInit(): void {
-		this._languageService.language.subscribe({
-			next: (nextLanguage) => {
-				this.languageSource = nextLanguage;
-			},
-		});
-	}
+    ngOnInit(): void {
+        this._languageService.language.subscribe({
+            next: (nextLanguage) => {
+                this.languageSource = nextLanguage;
+            },
+        });
+    }
 
-	ngAfterViewInit(): void {
-		this.dataList.sort = this.tableSortRef;
-	}
+    ngAfterViewInit(): void {
+        this.dataList.sort = this.tableSortRef;
+    }
 
-	ngOnChanges(changes: SimpleChanges): void {
-		const nextData = changes['data']?.currentValue;
+    ngOnChanges(changes: SimpleChanges): void {
+        const nextData = changes['data']?.currentValue;
 
-		if (nextData && nextData.length === 0) {
-			this.headerList = [];
-			this.dataList.data = [];
-		}
+        if (nextData && nextData.length === 0) {
+            this.headerList = [];
+            this.dataList.data = [];
+        }
 
-		if (nextData && nextData.length > 0) {
-			this.headerList = Object.keys(nextData[0]).concat(this.SETTINGS_HEADER);
+        if (nextData && nextData.length > 0) {
+            this.headerList = Object.keys(nextData[0]).concat(this.SETTINGS_HEADER);
 
-			this.dataList.data = nextData;
-		}
-	}
+            this.dataList.data = nextData;
+        }
+    }
 
-	public isObject(target: string | object) {
-		if (!!!target) {
-			return;
-		}
+    public isObject(target: string | object) {
+        if (!!!target) {
+            return;
+        }
 
-		return typeof target === 'object';
-	}
+        return typeof target === 'object';
+    }
 
-	public generateObjectString(target: object) {
-		if (Array.isArray(target)) {
-			return `[] ${target.length} elements`;
-		}
+    public generateObjectString(target: object) {
+        if (Array.isArray(target)) {
+            return `[] ${target.length} elements`;
+        }
 
-		return JSON.stringify(target);
-	}
+        return JSON.stringify(target);
+    }
 }
