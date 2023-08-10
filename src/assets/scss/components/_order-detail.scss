@@ -1,85 +1,85 @@
 app-order-detail {
-	display: flex;
-	height: 100%;
+    display: flex;
+    height: 100%;
 }
 
 .order-detail {
-	display: flex !important;
-	flex-direction: column;
-	align-items: center;
-	gap: 5vh 0;
-	width: 80vw;
-	max-width: 60vh;
-	height: 100%;
-	max-height: 100% !important;
-	background-color: $foreground-disabled;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 5vh 0;
+    width: 80vw;
+    max-width: 60vh;
+    height: 100%;
+    max-height: 100% !important;
+    background-color: $foreground-disabled;
 
-	app-order-status {
-		width: 100%;
-	}
+    app-order-status {
+        width: 100%;
+    }
 
-	&__title {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: 'DarumadropOne';
-		font-weight: bold;
-		font-size: 3rem;
-		padding: 1.5vh 0;
-		width: 100%;
-		white-space: nowrap;
-		overflow: hidden;
-		overflow-x: auto;
-	}
+    &__title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'DarumadropOne';
+        font-weight: bold;
+        font-size: 3rem;
+        padding: 1.5vh 0;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        overflow-x: auto;
+    }
 
-	&__qr-code {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: $background;
-		border-radius: 15px;
-		width: 25vh;
-		height: 31vh;
+    &__qr-code {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $background;
+        border-radius: 15px;
+        width: 25vh;
+        height: 31vh;
 
-		img {
-			width: 100%;
-			height: 100%;
-		}
+        img {
+            width: 100%;
+            height: 100%;
+        }
 
-		app-logo {
-			display: flex;
-			width: 12vh;
-			height: 10vh;
+        app-logo {
+            display: flex;
+            width: 12vh;
+            height: 10vh;
 
-			svg {	
-				fill: $foreground;
-			}
-		}
-	}
+            svg {
+                fill: $foreground;
+            }
+        }
+    }
 
-	&__items {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(10vh, 1fr));
-		gap: 2.5vh;
-		border: solid 1px $foreground-bright;
-		border-radius: $app-input-border-raidus;
-		height: 25vh;
-		width: 85%;
-		padding: 2.5vh;
-		overflow: hidden;
-		overflow-y: auto;
+    &__items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10vh, 1fr));
+        gap: 2.5vh;
+        border: solid 1px $foreground-bright;
+        border-radius: $app-input-border-raidus;
+        height: 25vh;
+        width: 85%;
+        padding: 2.5vh;
+        overflow: hidden;
+        overflow-y: auto;
 
-		li {
-			width: 100%;
-			height: 20vh;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			background-color: $foreground;
-			color: $accent-bright;
-			border-radius: $app-input-border-raidus;
-			overflow: hidden;
-		}
-	}
+        li {
+            width: 100%;
+            height: 20vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: $foreground;
+            color: $accent-bright;
+            border-radius: $app-input-border-raidus;
+            overflow: hidden;
+        }
+    }
 }

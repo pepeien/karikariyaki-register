@@ -8,8 +8,8 @@ import { OrderStatusComponent } from './index.component';
 import { MaterialBundle } from '@imports';
 
 @NgModule({
-	declarations: [OrderStatusComponent],
-	imports: [CommonModule, MaterialBundle],
-	exports: [OrderStatusComponent],
+    declarations: [OrderStatusComponent],
+    imports: [CommonModule, MaterialBundle],
+    exports: [OrderStatusComponent],
 })
 export class OrderStatusModule {}

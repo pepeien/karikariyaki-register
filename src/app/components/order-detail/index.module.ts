@@ -12,8 +12,8 @@ import { OrderStatusModule } from '../order-status';
 import { LogoModule } from '../logo';
 
 @NgModule({
-	declarations: [OrderDetailComponent],
-	imports: [CommonModule, LogoModule, MaterialBundle, OrderStatusModule],
-	exports: [OrderDetailComponent],
+    declarations: [OrderDetailComponent],
+    imports: [CommonModule, LogoModule, MaterialBundle, OrderStatusModule],
+    exports: [OrderDetailComponent],
 })
 export class OrderDetailModule {}

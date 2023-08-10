@@ -1,25 +1,25 @@
 <div *ngIf="order" class="order-detail" mat-dialog-content>
-	<app-order-status [status]="order.status"></app-order-status>
-	<div class="order-detail__title">{{ order.client }}</div>
-	<a
-		*ngIf="qrCodeRedirector"
-		class="order-detail__qr-code"
-		href="{{this.qrCodeRedirector.redirector}}"
-		target="_blank"
-		rel="noopener noreferrer"
-	>
-		<img [src]="qrCodeRedirector.base64"/>
-	</a>
-	<div *ngIf="!qrCodeRedirector" class="order-detail__qr-code">
-		<app-logo
-			[@breathe]="logoBreatheAnimationState"
-			(@breathe.done)="onLogoBreatheAnimationDone()"
-		>
-		</app-logo>
-	</div>
-	<ul class="order-detail__items">
-		<li *ngFor="let item of order.items">
-			{{ item.product.name }}
-		</li>
-	</ul>
+    <app-order-status [status]="order.status"></app-order-status>
+    <div class="order-detail__title">{{ order.client }}</div>
+    <a
+        *ngIf="qrCodeRedirector"
+        class="order-detail__qr-code"
+        href="{{ this.qrCodeRedirector.redirector }}"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <img [src]="qrCodeRedirector.base64" />
+    </a>
+    <div *ngIf="!qrCodeRedirector" class="order-detail__qr-code">
+        <app-logo
+            [@breathe]="logoBreatheAnimationState"
+            (@breathe.done)="onLogoBreatheAnimationDone()"
+        >
+        </app-logo>
+    </div>
+    <ul class="order-detail__items">
+        <li *ngFor="let item of order.items">
+            {{ item.product.name }}
+        </li>
+    </ul>
 </div>

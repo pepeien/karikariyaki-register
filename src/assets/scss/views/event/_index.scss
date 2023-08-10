@@ -2,83 +2,98 @@
 @import './registry';
 
 .event {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	height: 100%;
-	width: 100%;
-	z-index: $max-z-index - 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    z-index: $max-z-index - 2;
 
-	app-logo {
-		position: fixed;
-		height: clamp(10vh, 10vh + 1rem, 15vh);
-		width: clamp(15vh, 10vh + 1rem, 20vh);
-		top: 85dvh;
+    app-logo {
+        position: fixed;
+        height: clamp(10vh, 10vh + 1rem, 15vh);
+        width: clamp(15vh, 10vh + 1rem, 20vh);
+        top: 85dvh;
 
-		& svg {
-			fill: $foreground-disabled;
-			opacity: 0.5;
-		}
-	}
+        & svg {
+            fill: $foreground-disabled;
+            opacity: 0.5;
+        }
+    }
 
-	&__title {
-		font-family: 'Nunito';
-		font-size: clamp(6vh, 6vh + 1.2rem, 8vh);
-		font-weight: bold;
-		text-align: center;
-		color: $foreground;
-		height: 12vh;
-		padding: 1vh 0;
-		width: 100%;
-		white-space: nowrap;
-		overflow: hidden;
-		overflow-x: auto;
-	}
+    &__title {
+        font-family: 'Nunito';
+        font-size: clamp(6vh, 6vh + 1.2rem, 8vh);
+        font-weight: bold;
+        text-align: center;
+        color: $foreground;
+        height: 12vh;
+        padding: 1vh 0;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        overflow-x: auto;
+    }
 
-	.--back-event {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: fixed;
-		bottom: 1vh;
-		left: 1vh;
-		background-color: $foreground;
-		color: $accent-bright;
-		font-family: 'DarumadropOne';
-		font-size: 2.5vh;
-		border-radius: 12px;
-		padding: 0 3vh;
-		height: 7vh;
-		margin: 0 auto;
-		z-index: $max-z-index - 3;
+    .--back-event {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 1vh;
+        left: 1vh;
+        background-color: $foreground;
+        color: $accent-bright;
+        font-family: 'DarumadropOne';
+        font-size: 2.5vh;
+        border-radius: 12px;
+        padding: 0 3vh;
+        height: 7vh;
+        margin: 0 auto;
+        z-index: $max-z-index - 3;
 
-		-webkit-box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.1);
-		-moz-box-shadow: 	4px 4px 4px 0px rgba(0,0,0,0.1);
-		box-shadow: 		4px 4px 4px 0px rgba(0,0,0,0.1);
+        -webkit-box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.1);
 
-		-webkit-transition: background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-		-moz-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-		-ms-transition: 	background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-		-o-transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
-		transition: 		background-color ease-in-out .1s, border-color ease-in-out .1s, color ease-in-out .1s;
+        -webkit-transition:
+            background-color ease-in-out 0.1s,
+            border-color ease-in-out 0.1s,
+            color ease-in-out 0.1s;
+        -moz-transition:
+            background-color ease-in-out 0.1s,
+            border-color ease-in-out 0.1s,
+            color ease-in-out 0.1s;
+        -ms-transition:
+            background-color ease-in-out 0.1s,
+            border-color ease-in-out 0.1s,
+            color ease-in-out 0.1s;
+        -o-transition:
+            background-color ease-in-out 0.1s,
+            border-color ease-in-out 0.1s,
+            color ease-in-out 0.1s;
+        transition:
+            background-color ease-in-out 0.1s,
+            border-color ease-in-out 0.1s,
+            color ease-in-out 0.1s;
 
-		&:hover {
-			cursor: pointer;
+        &:hover {
+            cursor: pointer;
 
-			background-color: $foreground-brighter;
-			border-color: $foreground-brighter;
-		}
+            background-color: $foreground-brighter;
+            border-color: $foreground-brighter;
+        }
 
-		mat-icon {
-			transform: scale(1.5);
-		}
-	}
+        mat-icon {
+            transform: scale(1.5);
+        }
+    }
 }
 
 @media (min-width: 821px) {
-	.event {
-		&__title {
-			height: 15vh;
-		}
-	}
+    .event {
+        &__title {
+            height: 15vh;
+        }
+    }
 }
